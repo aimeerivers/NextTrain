@@ -8,12 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            if let coordinate = locationManager.lastKnownLocation {
+                Text("Latitude: \(coordinate.latitude)")
+                
+                Text("Longitude: \(coordinate.longitude)")
+            } else {
+                Text("Unknown Location")
+            }
+            
+            
+            Button("Get location") {
+                locationManager.checkLocationAuthorization()
+            }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
     }
