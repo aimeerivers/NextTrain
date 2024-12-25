@@ -13,6 +13,12 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     @Published var lastKnownLocation: CLLocationCoordinate2D?
     var manager = CLLocationManager()
     
+    override init() {
+        super.init()
+        manager.delegate = self
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation() // Start location updates automatically
+    }
     
     func checkLocationAuthorization() {
         
