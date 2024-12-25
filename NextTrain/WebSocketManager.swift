@@ -40,15 +40,12 @@ struct Departure: Identifiable, Codable {
 class WebSocketManager: NSObject, ObservableObject {
     private var webSocket: URLSessionWebSocketTask?
     @Published var departures: [Departure] = []
-    private let stationId: String
 
-    init(stationId: String) {
-        self.stationId = stationId
+    override init() {
         super.init()
-        connect()
     }
 
-    func connect() {
+    func connect(stationId: String) {
         let urlString =
             "wss://api.mittog.dk/api/ws/stog/departure/\(stationId)/"
         guard let url = URL(string: urlString) else {
@@ -103,7 +100,13 @@ class WebSocketManager: NSObject, ObservableObject {
     }
 
     func disconnect() {
-        webSocket?.cancel(with: .goingAway, reason: nil)
+        print("Disconnecting WebSocket")
+        guard let webSocket = webSocket else {
+            print("WebSocket is already nil")
+            return
+        }
+        webSocket.cancel(with: .goingAway, reason: nil)
+        self.webSocket = nil
     }
 }
 

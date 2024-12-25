@@ -24,9 +24,40 @@ func nextTwoDeparturesPerTrack(from departures: [Departure]) -> [String:
     return result
 }
 
+let stationLookup: [String: String] = [
+    "BA": "Ballerup",
+    "BI": "Birkerød",
+    "BUD": "Buddinge",
+    "DAH": "Danshøj",
+    "DBT": "Dybbølsbro",
+    "EMT": "Emdrup",
+    "FL": "Flintholm",
+    "FM": "Farum",
+    "FS": "Frederikssund",
+    "GL": "Glostrup",
+    "HI": "Hillerød",
+    "HL": "Hellerup",
+    "HOT": "Holte",
+    "HTÅ": "Høje Taastrup",
+    "KH": "København H",
+    "KN": "Nørreport",
+    "KJ": "Køge",
+    "KK": "Østerport",
+    "KL": "Klampenborg",
+    "MPT": "Malmparken",
+    "NEL": "København Syd",
+    "SAM": "Svanemøllen",
+    "SKO": "Skovlunde",
+    "SKT": "Skovbrynet",
+    "SOL": "Solrød Strand",
+    "UND": "Hundige",
+    "VAL": "Valby",
+    "VAN": "Vanløse",
+    "ØL": "Ølstykke",
+]
+
 struct DepartureView: View {
-    @StateObject private var webSocketManager = WebSocketManager(
-        stationId: "MPT")
+    @StateObject private var webSocketManager = WebSocketManager()
 
     let station: Station
 
@@ -35,29 +66,53 @@ struct DepartureView: View {
             if webSocketManager.departures.isEmpty {
                 Text("Loading departures...")
             } else {
-                List(webSocketManager.departures.prefix(2)) { departure in
-                    VStack(alignment: .leading) {
-                        Text("Line \(departure.LineName)")
-                            .font(.headline)
-                        Text("To \(departure.TargetStation[0])")
-                        if departure.MinutesToDeparture.truncatingRemainder(
-                            dividingBy: 1) == 0
-                        {
-                            Text(
-                                "In \(Int(departure.MinutesToDeparture)) minutes"
-                            )
-                        } else {
-                            Text(
-                                String(
-                                    format: "In %.1f minutes",
-                                    departure.MinutesToDeparture))
+                let groupedDepartures = nextTwoDeparturesPerTrack(
+                    from: webSocketManager.departures)
+                List {
+                    ForEach(groupedDepartures.keys.sorted(), id: \.self) {
+                        track in
+                        Section(header: Text("Track \(track)")) {
+                            ForEach(groupedDepartures[track]!) { departure in
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text(departure.LineName).font(.headline)
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 5.0)
+                                            .background(
+                                                Color(departure.LineName)
+                                            )
+                                        Text(
+                                            stationLookup[
+                                                departure.TargetStation[0],
+                                                default:
+                                                    departure.TargetStation[0]]
+                                        ).font(
+                                            .headline)
+                                        Spacer()
+                                        if departure.MinutesToDeparture
+                                            .truncatingRemainder(dividingBy: 1)
+                                            == 0
+                                        {
+                                            Text(
+                                                "\(Int(departure.MinutesToDeparture)) min"
+                                            )
+                                        } else {
+                                            Text(
+                                                String(
+                                                    format: "%.1f min",
+                                                    departure.MinutesToDeparture
+                                                ))
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
         .onAppear {
-            webSocketManager.connect()
+            webSocketManager.connect(stationId: station.id)
         }
         .onDisappear {
             webSocketManager.disconnect()
@@ -68,5 +123,5 @@ struct DepartureView: View {
 
 #Preview {
     DepartureView(
-        station: Station(id: "SKO", name: "Skovlunde Station", distance: 200))
+        station: Station(id: "SKO", name: "Skovlunde", distance: 200))
 }

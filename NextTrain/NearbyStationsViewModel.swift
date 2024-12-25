@@ -15,8 +15,10 @@ struct Station: Identifiable {
 
 class NearbyStationsViewModel: ObservableObject {
     @Published var stations: [Station] = [
-        Station(id: "MPT", name: "Malmparken Station", distance: 2180),
-        Station(id: "SKO", name: "Skovlunde Station", distance: 2360),
-        Station(id: "BA", name: "Ballerup Station", distance: 2650),
+        Station(id: "MPT", name: "Malmparken", distance: 2180),
+        Station(id: "SKO", name: "Skovlunde", distance: 2360),
+        Station(id: "BA", name: "Ballerup", distance: 2650),
+        Station(id: "KH", name: "København H", distance: 11910),
+        Station(id: "KN", name: "Nørreport", distance: 12000),
     ]
 }
