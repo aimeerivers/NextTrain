@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct DepartureView: View {
-    let stop: Stop
+    let station: Station
 
     var body: some View {
         VStack {
-            Text("Departures for \(stop.name)")
+            Text("Departures for \(station.name)")
                 .font(.title)
                 .padding()
 
@@ -23,11 +23,11 @@ struct DepartureView: View {
                 Text("Train C - 15 minutes")
             }
         }
-        .navigationTitle(stop.name)
+        .navigationTitle(station.name)
     }
 }
 
 #Preview {
     DepartureView(
-        stop: Stop(id: "stop1", name: "Central Station", distance: 200))
+        station: Station(id: "SKO", name: "Skovlunde Station", distance: 200))
 }

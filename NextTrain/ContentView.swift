@@ -9,24 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
-    @StateObject private var viewModel = NearbyStopsViewModel()
+    @StateObject private var viewModel = NearbyStationsViewModel()
 
     var body: some View {
         VStack {
 
             NavigationView {
-                List(viewModel.stops) { stop in
-                    NavigationLink(destination: DepartureView(stop: stop)) {
+                List(viewModel.stations) { station in
+                    NavigationLink(destination: DepartureView(station: station))
+                    {
                         VStack(alignment: .leading) {
-                            Text(stop.name)
+                            Text(station.name)
                                 .font(.headline)
-                            Text("\(stop.distance) meters away")
+                            Text("\(station.distance) meters away")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
                     }
                 }
-                .navigationTitle("Nearby Stops")
+                .navigationTitle("Nearby Stations")
             }
 
             if let coordinate = locationManager.lastKnownLocation {
