@@ -19,6 +19,7 @@ extension CLLocationCoordinate2D: @retroactive Equatable {
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var viewModel = NearbyStationsViewModel()
+    @State private var lastUpdate = Date(timeIntervalSince1970: 0)
 
     var body: some View {
         VStack {
@@ -51,18 +52,10 @@ struct ContentView: View {
                     }
                     .onChange(of: locationManager.lastKnownLocation) {
                         oldLocation, newLocation in
-                        if let oldLocation = oldLocation,
-                            let newLocation = newLocation
-                        {
-                            let distance = CLLocation(
-                                latitude: oldLocation.latitude,
-                                longitude: oldLocation.longitude
-                            )
-                            .distance(
-                                from: CLLocation(
-                                    latitude: newLocation.latitude,
-                                    longitude: newLocation.longitude))
-                            if distance > 5 {
+                        if let newLocation = newLocation {
+                            let now = Date()
+                            if now.timeIntervalSince(lastUpdate) > 5 {
+                                lastUpdate = now
                                 viewModel.updateNearbyStations(
                                     for: newLocation.latitude,
                                     longitude: newLocation.longitude)
