@@ -24,7 +24,7 @@ let allStations: [Station] = [
     Station(id: "DAH", name: "Danshøj", latitude: 55.664167, longitude: 12.493611),
     Station(id: "DBT", name: "Dybbølsbro", latitude: 55.665194, longitude: 12.559722),
     Station(id: "DYT", name: "Dyssegård", latitude: 55.7325, longitude: 12.535833),
-    Station(id: "GTG", name: "Egedal", latitude: 55.779722, longitude: 12.185556),
+    Station(id: "EGD", name: "Egedal", latitude: 55.779722, longitude: 12.185556),
     Station(id: "EMT", name: "Emdrup", latitude: 55.720278, longitude: 12.541389),
     Station(id: "FM", name: "Farum", latitude: 55.811944, longitude: 12.373889),
     Station(id: "FVT", name: "Favrholm", latitude: 55.911089, longitude: 12.314489),
