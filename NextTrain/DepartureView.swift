@@ -45,10 +45,13 @@ struct DepartureView: View {
                         groupedDepartures.keys.sorted {
                             let firstTrackParts = $0.split(separator: "-")
                             let secondTrackParts = $1.split(separator: "-")
-                            let firstTrack = Int(firstTrackParts.first ?? "") ?? 0
-                            let secondTrack = Int(secondTrackParts.first ?? "") ?? 0
+                            let firstTrack =
+                                Int(firstTrackParts.first ?? "") ?? 0
+                            let secondTrack =
+                                Int(secondTrackParts.first ?? "") ?? 0
                             if firstTrack == secondTrack {
-                                return firstTrackParts.count < secondTrackParts.count
+                                return firstTrackParts.count
+                                    < secondTrackParts.count
                             }
                             return firstTrack < secondTrack
                         }, id: \.self
@@ -68,6 +71,11 @@ struct DepartureView: View {
                                                 for: departure.TargetStation[0])
                                         )
                                         .font(.headline)
+                                        .foregroundColor(
+                                            departure.IsCancelled
+                                                ? .red : .primary
+                                        )
+                                        .strikethrough(departure.IsCancelled)
                                         Spacer()
                                         if departure.MinutesToDeparture
                                             .truncatingRemainder(dividingBy: 1)
@@ -83,6 +91,12 @@ struct DepartureView: View {
                                                     departure.MinutesToDeparture
                                                 ))
                                         }
+                                    }
+                                    if departure.IsCancelled {
+                                        Text("Cancelled")
+                                            .foregroundColor(.red)
+                                            .font(.subheadline)
+                                            .padding(.leading, 30.0)
                                     }
                                 }
                             }
