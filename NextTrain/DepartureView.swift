@@ -10,8 +10,13 @@ import SwiftUI
 func nextTwoDeparturesPerTrack(from departures: [Departure]) -> [String:
     [Departure]]
 {
+    // Filter out departures where TrainDeparted is not nil
+    let filteredDepartures = departures.filter { $0.TrainDeparted == nil }
+
     // Group by TrackCurrent
-    let groupedByTrack = Dictionary(grouping: departures) { $0.TrackCurrent }
+    let groupedByTrack = Dictionary(grouping: filteredDepartures) {
+        $0.TrackCurrent
+    }
 
     // For each track, sort by MinutesToDeparture and pick the next two departures
     var result: [String: [Departure]] = [:]
