@@ -41,8 +41,15 @@ struct DepartureView: View {
                 let groupedDepartures = nextTwoDeparturesPerTrack(
                     from: webSocketManager.departures)
                 List {
-                    ForEach(groupedDepartures.keys.sorted(), id: \.self) {
-                        track in
+                    ForEach(
+                        groupedDepartures.keys.sorted {
+                            let firstTrack =
+                                $0.split(separator: "-").first ?? ""
+                            let secondTrack =
+                                $1.split(separator: "-").first ?? ""
+                            return Int(firstTrack) ?? 0 < Int(secondTrack) ?? 0
+                        }, id: \.self
+                    ) { track in
                         Section(header: Text("Track \(track)")) {
                             ForEach(groupedDepartures[track]!) { departure in
                                 VStack(alignment: .leading) {
