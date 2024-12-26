@@ -75,7 +75,11 @@ final class LocationManager: NSObject, CLLocationManagerDelegate,
                 }
             })
 
-        if let topController = UIApplication.shared.windows.first?
+        if let topController = UIApplication.shared
+            .connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow })?
             .rootViewController
         {
             topController.present(alert, animated: true, completion: nil)
