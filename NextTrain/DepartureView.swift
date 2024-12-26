@@ -43,11 +43,14 @@ struct DepartureView: View {
                 List {
                     ForEach(
                         groupedDepartures.keys.sorted {
-                            let firstTrack =
-                                $0.split(separator: "-").first ?? ""
-                            let secondTrack =
-                                $1.split(separator: "-").first ?? ""
-                            return Int(firstTrack) ?? 0 < Int(secondTrack) ?? 0
+                            let firstTrackParts = $0.split(separator: "-")
+                            let secondTrackParts = $1.split(separator: "-")
+                            let firstTrack = Int(firstTrackParts.first ?? "") ?? 0
+                            let secondTrack = Int(secondTrackParts.first ?? "") ?? 0
+                            if firstTrack == secondTrack {
+                                return firstTrackParts.count < secondTrackParts.count
+                            }
+                            return firstTrack < secondTrack
                         }, id: \.self
                     ) { track in
                         Section(header: Text("Track \(track)")) {
@@ -101,6 +104,6 @@ struct DepartureView: View {
 #Preview {
     DepartureView(
         station: Station(
-            id: "KH", name: "København H", latitude: 55.672778,
+            id: "DBT", name: "København H", latitude: 55.672778,
             longitude: 12.564444))
 }
