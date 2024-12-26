@@ -35,6 +35,19 @@ struct Departure: Identifiable, Codable {
         case TrackCurrent
         case IsCancelled
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        LineName = try container.decode(String.self, forKey: .LineName)
+        MinutesToDeparture =
+            try container.decodeIfPresent(
+                Float.self, forKey: .MinutesToDeparture) ?? 0
+        TargetStation = try container.decode(
+            [String].self, forKey: .TargetStation)
+        TrackCurrent = try container.decode(String.self, forKey: .TrackCurrent)
+        IsCancelled = try container.decode(Bool.self, forKey: .IsCancelled)
+    }
 }
 
 class WebSocketManager: NSObject, ObservableObject {
