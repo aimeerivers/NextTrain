@@ -7,6 +7,7 @@
 
 import CoreLocation
 import Foundation
+import UIKit
 
 final class LocationManager: NSObject, CLLocationManagerDelegate,
     ObservableObject
@@ -36,6 +37,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate,
 
         case .denied:  //The user dennied your app to get location or disabled the services location or the phone is in airplane mode
             print("Location denied")
+            promptToOpenSettings()
 
         case .authorizedAlways:  //This authorization allows you to use all location services and receive location events whether or not your app is in use.
             print("Location authorizedAlways")
@@ -47,6 +49,36 @@ final class LocationManager: NSObject, CLLocationManagerDelegate,
         @unknown default:
             print("Location service disabled")
 
+        }
+    }
+
+    private func promptToOpenSettings() {
+        let alert = UIAlertController(
+            title: "Location Permission Denied",
+            message: "Please enable location permissions in Settings.",
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(
+            UIAlertAction(title: "Settings", style: .default) { _ in
+                guard
+                    let settingsUrl = URL(
+                        string: UIApplication.openSettingsURLString)
+                else {
+                    return
+                }
+
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(
+                        settingsUrl, options: [:], completionHandler: nil)
+                }
+            })
+
+        if let topController = UIApplication.shared.windows.first?
+            .rootViewController
+        {
+            topController.present(alert, animated: true, completion: nil)
         }
     }
 
