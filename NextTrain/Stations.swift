@@ -78,7 +78,7 @@ let allStations: [Station] = [
     Station(id: "SGT", name: "Stengården", latitude: 55.756667, longitude: 12.473056),
     Station(id: "ST", name: "Stenløse", latitude: 55.7675, longitude: 12.189722),
     Station(id: "SAM", name: "Svanemøllen", latitude: 55.7155, longitude: 12.577972),
-    Station(id: "SYV", name: "Syhavn", latitude: 55.654722, longitude: 12.5375),
+    Station(id: "SYV", name: "Sydhavn", latitude: 55.654722, longitude: 12.5375),
     Station(id: "TÅ", name: "Taastrup", latitude: 55.6525, longitude: 12.302222),
     Station(id: "VAL", name: "Valby", latitude: 55.66375, longitude: 12.513889),
     Station(id: "VLB", name: "Vallensbæk", latitude: 55.623417, longitude: 12.3875),
