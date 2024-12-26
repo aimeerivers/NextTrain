@@ -5,7 +5,16 @@
 //  Created by aimee rivers on 25/12/2024.
 //
 
+import CoreLocation
 import SwiftUI
+
+extension CLLocationCoordinate2D: @retroactive Equatable {
+    public static func == (
+        lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D
+    ) -> Bool {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
@@ -39,6 +48,26 @@ struct ContentView: View {
                         viewModel.updateNearbyStations(
                             for: coordinate.latitude,
                             longitude: coordinate.longitude)
+                    }
+                    .onChange(of: locationManager.lastKnownLocation) {
+                        oldLocation, newLocation in
+                        if let oldLocation = oldLocation,
+                            let newLocation = newLocation
+                        {
+                            let distance = CLLocation(
+                                latitude: oldLocation.latitude,
+                                longitude: oldLocation.longitude
+                            )
+                            .distance(
+                                from: CLLocation(
+                                    latitude: newLocation.latitude,
+                                    longitude: newLocation.longitude))
+                            if distance > 5 {
+                                viewModel.updateNearbyStations(
+                                    for: newLocation.latitude,
+                                    longitude: newLocation.longitude)
+                            }
+                        }
                     }
             } else {
                 Text("Unknown Location")
