@@ -24,37 +24,9 @@ func nextTwoDeparturesPerTrack(from departures: [Departure]) -> [String:
     return result
 }
 
-let stationLookup: [String: String] = [
-    "BA": "Ballerup",
-    "BI": "Birkerød",
-    "BUD": "Buddinge",
-    "DAH": "Danshøj",
-    "DBT": "Dybbølsbro",
-    "EMT": "Emdrup",
-    "FL": "Flintholm",
-    "FM": "Farum",
-    "FS": "Frederikssund",
-    "GL": "Glostrup",
-    "HI": "Hillerød",
-    "HL": "Hellerup",
-    "HOT": "Holte",
-    "HTÅ": "Høje Taastrup",
-    "KH": "København H",
-    "KN": "Nørreport",
-    "KJ": "Køge",
-    "KK": "Østerport",
-    "KL": "Klampenborg",
-    "MPT": "Malmparken",
-    "NEL": "København Syd",
-    "SAM": "Svanemøllen",
-    "SKO": "Skovlunde",
-    "SKT": "Skovbrynet",
-    "SOL": "Solrød Strand",
-    "UND": "Hundige",
-    "VAL": "Valby",
-    "VAN": "Vanløse",
-    "ØL": "Ølstykke",
-]
+func stationName(for id: String) -> String {
+    return allStations.first(where: { $0.id == id })?.name ?? id
+}
 
 struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
@@ -82,12 +54,10 @@ struct DepartureView: View {
                                                 Color(departure.LineName)
                                             )
                                         Text(
-                                            stationLookup[
-                                                departure.TargetStation[0],
-                                                default:
-                                                    departure.TargetStation[0]]
-                                        ).font(
-                                            .headline)
+                                            stationName(
+                                                for: departure.TargetStation[0])
+                                        )
+                                        .font(.headline)
                                         Spacer()
                                         if departure.MinutesToDeparture
                                             .truncatingRemainder(dividingBy: 1)
