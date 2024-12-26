@@ -18,7 +18,13 @@ struct Station: Identifiable {
     var distance: Double?  // To store the calculated distance for display
     var distanceFormatted: String? {
         guard let distance = distance else { return nil }
-        return String(format: "%.1f meters", distance)
+        if distance >= 10000 {
+            return String(format: "%.1f km", distance / 1000)
+        } else if distance <= 10 {
+            return String(format: "%.1f meters", distance)
+        } else {
+            return String(format: "%.0f meters", distance)
+        }
     }
 }
 
