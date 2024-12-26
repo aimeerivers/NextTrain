@@ -72,9 +72,7 @@ struct ContentView: View {
             }
 
             if let coordinate = locationManager.lastKnownLocation {
-                Text(
-                    "Location: \(coordinate.latitude), \(coordinate.longitude)"
-                ).dynamicTypeSize(.xSmall)
+                Spacer()
                     .onAppear {
                         viewModel.updateNearbyStations(
                             for: coordinate.latitude,
