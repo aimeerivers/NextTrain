@@ -92,6 +92,12 @@ struct DepartureView: View {
                                                 ))
                                         }
                                     }
+                                    if departure.TrainArrived != nil {
+                                        Text("Departing soon")
+                                            .foregroundColor(.orange)
+                                            .font(.subheadline)
+                                            .padding(.leading, 30.0)
+                                    }
                                     if departure.IsCancelled {
                                         Text("Cancelled")
                                             .foregroundColor(.red)
@@ -118,6 +124,6 @@ struct DepartureView: View {
 #Preview {
     DepartureView(
         station: Station(
-            id: "DBT", name: "København H", latitude: 55.672778,
+            id: "KH", name: "København H", latitude: 55.672778,
             longitude: 12.564444))
 }
