@@ -71,6 +71,11 @@ struct ContentView: View {
                     }
             } else {
                 Text("Unknown Location")
+
+                Button("Get location") {
+                    locationManager.checkLocationAuthorization()
+                }
+                .buttonStyle(.borderedProminent)
             }
         }
         .padding()
