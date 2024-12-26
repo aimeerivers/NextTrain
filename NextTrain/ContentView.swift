@@ -13,7 +13,6 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-
             NavigationView {
                 List(viewModel.stations) { station in
                     NavigationLink(destination: DepartureView(station: station))
@@ -21,9 +20,11 @@ struct ContentView: View {
                         VStack(alignment: .leading) {
                             Text(station.name)
                                 .font(.headline)
-                            Text("\(station.distance) meters away")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
+                            if let distance = station.distanceFormatted {
+                                Text(distance)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
                 }
@@ -31,9 +32,14 @@ struct ContentView: View {
             }
 
             if let coordinate = locationManager.lastKnownLocation {
-                Text("Latitude: \(coordinate.latitude)")
-
-                Text("Longitude: \(coordinate.longitude)")
+                Text(
+                    "Location: \(coordinate.latitude), \(coordinate.longitude)"
+                ).dynamicTypeSize(.xSmall)
+                    .onAppear {
+                        viewModel.updateNearbyStations(
+                            for: coordinate.latitude,
+                            longitude: coordinate.longitude)
+                    }
             } else {
                 Text("Unknown Location")
             }

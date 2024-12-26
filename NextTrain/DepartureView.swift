@@ -123,5 +123,7 @@ struct DepartureView: View {
 
 #Preview {
     DepartureView(
-        station: Station(id: "SKO", name: "Skovlunde", distance: 200))
+        station: Station(
+            id: "SKO", name: "Skovlunde", latitude: 55.723,
+            longitude: 12.390))
 }
