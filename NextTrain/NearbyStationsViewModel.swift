@@ -12,7 +12,7 @@ class NearbyStationsViewModel: ObservableObject {
 
     func updateNearbyStations(for latitude: Double, longitude: Double) {
         let closestStations = findClosestStations(
-            to: latitude, longitude: longitude, count: 5, from: allStations)
+            to: latitude, longitude: longitude, count: 100, from: allStations)
         DispatchQueue.main.async {
             self.stations = closestStations
         }

@@ -20,25 +20,55 @@ struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var viewModel = NearbyStationsViewModel()
     @State private var lastUpdate = Date(timeIntervalSince1970: 0)
+    @State private var searchText = ""
 
     var body: some View {
         VStack {
             NavigationView {
-                List(viewModel.stations) { station in
-                    NavigationLink(destination: DepartureView(station: station))
-                    {
-                        VStack(alignment: .leading) {
-                            Text(station.name)
-                                .font(.headline)
-                            if let distance = station.distanceFormatted {
-                                Text(distance)
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
+                List {
+                    if searchText.isEmpty {
+                        ForEach(viewModel.stations.prefix(5)) { station in
+                            NavigationLink(
+                                destination: DepartureView(station: station)
+                            ) {
+                                VStack(alignment: .leading) {
+                                    Text(station.name)
+                                        .font(.headline)
+                                    if let distance = station.distanceFormatted
+                                    {
+                                        Text(distance)
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        ForEach(
+                            viewModel.stations.filter {
+                                $0.name.lowercased().contains(
+                                    searchText.lowercased())
+                            }
+                        ) { station in
+                            NavigationLink(
+                                destination: DepartureView(station: station)
+                            ) {
+                                VStack(alignment: .leading) {
+                                    Text(station.name)
+                                        .font(.headline)
+                                    if let distance = station.distanceFormatted
+                                    {
+                                        Text(distance)
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
                             }
                         }
                     }
                 }
                 .navigationTitle("Nearby Stations")
+                .searchable(text: $searchText)
             }
 
             if let coordinate = locationManager.lastKnownLocation {
