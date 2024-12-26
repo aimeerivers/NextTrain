@@ -66,17 +66,37 @@ struct DepartureView: View {
                                             .background(
                                                 Color(departure.LineName)
                                             )
-                                        Text(
-                                            stationName(
-                                                for: departure.TargetStation[0])
-                                        )
-                                        .font(.headline)
-                                        .foregroundColor(
-                                            departure.IsCancelled
-                                                ? .red : .primary
-                                        )
-                                        .strikethrough(departure.IsCancelled)
+
+                                        VStack(alignment: .leading) {
+                                            Text(
+                                                stationName(
+                                                    for:
+                                                        departure.TargetStation[
+                                                            0])
+                                            )
+                                            .font(.headline)
+                                            .foregroundColor(
+                                                departure.IsCancelled
+                                                    ? .red : .primary
+                                            )
+                                            .strikethrough(
+                                                departure.IsCancelled)
+
+                                            if departure.TrainArrived != nil {
+                                                Text("Train arrived")
+                                                    .foregroundColor(.green)
+                                                    .font(.subheadline)
+                                            }
+                                            if departure.IsCancelled {
+                                                Text("Cancelled")
+                                                    .foregroundColor(.red)
+                                                    .font(.subheadline)
+                                            }
+                                        }
+                                        .padding(.leading, 5.0)
+
                                         Spacer()
+
                                         if departure.MinutesToDeparture
                                             .truncatingRemainder(dividingBy: 1)
                                             == 0
@@ -91,18 +111,6 @@ struct DepartureView: View {
                                                     departure.MinutesToDeparture
                                                 ))
                                         }
-                                    }
-                                    if departure.TrainArrived != nil {
-                                        Text("Departing soon")
-                                            .foregroundColor(.orange)
-                                            .font(.subheadline)
-                                            .padding(.leading, 30.0)
-                                    }
-                                    if departure.IsCancelled {
-                                        Text("Cancelled")
-                                            .foregroundColor(.red)
-                                            .font(.subheadline)
-                                            .padding(.leading, 30.0)
                                     }
                                 }
                             }
