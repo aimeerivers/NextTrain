@@ -96,7 +96,11 @@ struct DepartureView: View {
                                             .strikethrough(
                                                 departure.IsCancelled)
 
-                                            if departure.TrainArrived != nil {
+                                            if departure.TrainArrived != nil
+                                                && Int(
+                                                    departure.MinutesToDeparture
+                                                ) <= 1
+                                            {
                                                 Text("Train arrived")
                                                     .foregroundColor(.green)
                                                     .font(.subheadline)
