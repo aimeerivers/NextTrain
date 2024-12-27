@@ -33,6 +33,14 @@ func stationName(for id: String) -> String {
     return allStations.first(where: { $0.id == id })?.name ?? id
 }
 
+func timeFormatted(minutes: Float) -> String {
+    if minutes.truncatingRemainder(dividingBy: 1) == 0 {
+        return "\(Int(minutes)) min"
+    } else {
+        return String(format: "%.1f min", minutes)
+    }
+}
+
 struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
 
@@ -115,31 +123,16 @@ struct DepartureView: View {
 
                                         Spacer()
 
-                                        if departure.MinutesToDeparture
-                                            .truncatingRemainder(dividingBy: 1)
-                                            == 0
-                                        {
-                                            Text(
-                                                "\(Int(departure.MinutesToDeparture)) min"
-                                            ).foregroundColor(
-                                                departure.IsCancelled
-                                                    ? .red : .primary
-                                            )
-                                            .strikethrough(
-                                                departure.IsCancelled)
-                                        } else {
-                                            Text(
-                                                String(
-                                                    format: "%.1f min",
-                                                    departure.MinutesToDeparture
-                                                )
-                                            ).foregroundColor(
-                                                departure.IsCancelled
-                                                    ? .red : .primary
-                                            )
-                                            .strikethrough(
-                                                departure.IsCancelled)
-                                        }
+                                        Text(
+                                            timeFormatted(
+                                                minutes: departure
+                                                    .MinutesToDeparture)
+                                        )
+                                        .foregroundColor(
+                                            departure.IsCancelled
+                                                ? .red : .primary
+                                        )
+                                        .strikethrough(departure.IsCancelled)
                                     }
                                 }
                             }
