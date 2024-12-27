@@ -26,6 +26,7 @@ struct Departure: Identifiable, Codable {
     let TrainDelayed: Bool
     let TargetStation: [String]
     let TrackCurrent: String
+    let TrackOriginal: String?
     let IsCancelled: Bool
     let TrainArrived: String?
     let TrainDeparted: String?
@@ -36,6 +37,7 @@ struct Departure: Identifiable, Codable {
         case MinutesToDeparture
         case TargetStation
         case TrackCurrent
+        case TrackOriginal
         case IsCancelled
         case TrainArrived
         case TrainDeparted
@@ -52,6 +54,7 @@ struct Departure: Identifiable, Codable {
         TargetStation = try container.decode(
             [String].self, forKey: .TargetStation)
         TrackCurrent = try container.decode(String.self, forKey: .TrackCurrent)
+        TrackOriginal = try container.decodeIfPresent(String.self, forKey: .TrackOriginal)
         IsCancelled = try container.decode(Bool.self, forKey: .IsCancelled)
         TrainArrived = try container.decodeIfPresent(
             String.self, forKey: .TrainArrived)

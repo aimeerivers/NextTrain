@@ -104,6 +104,16 @@ struct DepartureView: View {
                                             .strikethrough(
                                                 departure.IsCancelled)
 
+                                            if departure.TrackOriginal != nil
+                                                && departure.TrackOriginal
+                                                    != departure.TrackCurrent
+                                            {
+                                                Text(
+                                                    "Note: Track \(departure.TrackCurrent)"
+                                                )
+                                                .foregroundColor(.orange)
+                                                .font(.subheadline)
+                                            }
                                             if departure.TrainArrived != nil
                                                 && Int(
                                                     departure.MinutesToDeparture
