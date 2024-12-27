@@ -20,10 +20,10 @@ struct Station: Identifiable {
         guard let distance = distance else { return nil }
         if distance >= 100000 {
             return String(format: "%.0f km", distance / 1000)
-        } else if distance >= 500 {
+        } else if distance >= 200 {
             return String(format: "%.1f km", distance / 1000)
-        } else if distance <= 10 {
-            return String(format: "%.1f meters", distance)
+        } else if distance < 20 {
+            return "under 20 meters"
         } else {
             return String(format: "%.0f meters", distance)
         }
