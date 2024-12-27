@@ -48,17 +48,26 @@ struct DepartureView: View {
                 List {
                     ForEach(
                         groupedDepartures.keys.sorted {
-                            let firstTrackParts = $0.split(separator: "-")
-                            let secondTrackParts = $1.split(separator: "-")
-                            let firstTrack =
-                                Int(firstTrackParts.first ?? "") ?? 0
-                            let secondTrack =
-                                Int(secondTrackParts.first ?? "") ?? 0
-                            if firstTrack == secondTrack {
-                                return firstTrackParts.count
-                                    < secondTrackParts.count
+                            let firstHasDash = $0.contains("-")
+                            let secondHasDash = $1.contains("-")
+
+                            if firstHasDash && !secondHasDash {
+                                return false
+                            } else if !firstHasDash && secondHasDash {
+                                return true
+                            } else {
+                                let firstTrackParts = $0.split(separator: "-")
+                                let secondTrackParts = $1.split(separator: "-")
+                                let firstTrack =
+                                    Int(firstTrackParts.first ?? "") ?? 0
+                                let secondTrack =
+                                    Int(secondTrackParts.first ?? "") ?? 0
+                                if firstTrack == secondTrack {
+                                    return firstTrackParts.count
+                                        < secondTrackParts.count
+                                }
+                                return firstTrack < secondTrack
                             }
-                            return firstTrack < secondTrack
                         }, id: \.self
                     ) { track in
                         Section(header: Text("Track \(track)")) {
