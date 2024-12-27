@@ -121,13 +121,24 @@ struct DepartureView: View {
                                         {
                                             Text(
                                                 "\(Int(departure.MinutesToDeparture)) min"
+                                            ).foregroundColor(
+                                                departure.IsCancelled
+                                                    ? .red : .primary
                                             )
+                                            .strikethrough(
+                                                departure.IsCancelled)
                                         } else {
                                             Text(
                                                 String(
                                                     format: "%.1f min",
                                                     departure.MinutesToDeparture
-                                                ))
+                                                )
+                                            ).foregroundColor(
+                                                departure.IsCancelled
+                                                    ? .red : .primary
+                                            )
+                                            .strikethrough(
+                                                departure.IsCancelled)
                                         }
                                     }
                                 }
