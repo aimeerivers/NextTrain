@@ -174,6 +174,7 @@ struct DepartureView: View {
 
 #Preview {
     DepartureView(
+        // station: allStations.randomElement()!
         station: Station(
             id: "KH", name: "København H", latitude: 55.672778,
             longitude: 12.564444))
