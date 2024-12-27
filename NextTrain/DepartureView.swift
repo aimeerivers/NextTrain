@@ -113,6 +113,11 @@ struct DepartureView: View {
                                                     .foregroundColor(.green)
                                                     .font(.subheadline)
                                             }
+                                            if departure.TrainDelayed {
+                                                Text("Train delayed")
+                                                    .foregroundColor(.orange)
+                                                    .font(.subheadline)
+                                            }
                                             if departure.IsCancelled {
                                                 Text("Cancelled")
                                                     .foregroundColor(.red)
