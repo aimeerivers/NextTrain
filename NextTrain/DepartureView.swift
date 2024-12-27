@@ -33,8 +33,10 @@ func stationName(for id: String) -> String {
     return allStations.first(where: { $0.id == id })?.name ?? id
 }
 
-func timeFormatted(minutes: Float) -> String {
-    if minutes.truncatingRemainder(dividingBy: 1) == 0 {
+func timeFormatted(delayed: Bool, minutes: Float) -> String {
+    if delayed {
+        return "? min"
+    } else if minutes.truncatingRemainder(dividingBy: 1) == 0 {
         return "\(Int(minutes)) min"
     } else {
         return String(format: "%.1f min", minutes)
@@ -146,6 +148,7 @@ struct DepartureView: View {
 
                                         Text(
                                             timeFormatted(
+                                                delayed: departure.TrainDelayed,
                                                 minutes: departure
                                                     .MinutesToDeparture)
                                         )
