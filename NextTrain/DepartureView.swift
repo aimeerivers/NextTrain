@@ -10,7 +10,7 @@ import SwiftUI
 func nextTwoDeparturesPerTrack(from departures: [Departure]) -> [String:
     [Departure]]
 {
-    // Filter out departures where TrainDeparted is not nil
+    // Ensure not including when train has already departed
     let filteredDepartures = departures.filter { $0.TrainDeparted == nil }
 
     // Group by TrackCurrent
@@ -104,34 +104,40 @@ struct DepartureView: View {
                                             .strikethrough(
                                                 departure.IsCancelled)
 
-                                            if departure.TrackOriginal != nil
-                                                && departure.TrackOriginal
-                                                    != departure.TrackCurrent
-                                            {
-                                                Text(
-                                                    "Note: Track \(departure.TrackCurrent)"
-                                                )
-                                                .foregroundColor(.orange)
-                                                .font(.subheadline)
-                                            }
-                                            if departure.TrainArrived != nil
-                                                && Int(
-                                                    departure.MinutesToDeparture
-                                                ) <= 1 && !departure.IsCancelled
-                                            {
-                                                Text("Train arrived")
-                                                    .foregroundColor(.green)
-                                                    .font(.subheadline)
-                                            }
-                                            if departure.TrainDelayed {
-                                                Text("Train delayed")
-                                                    .foregroundColor(.orange)
-                                                    .font(.subheadline)
-                                            }
                                             if departure.IsCancelled {
                                                 Text("Cancelled")
                                                     .foregroundColor(.red)
                                                     .font(.subheadline)
+                                            } else {
+                                                if departure.TrackOriginal
+                                                    != nil
+                                                    && departure.TrackOriginal
+                                                        != departure
+                                                        .TrackCurrent
+                                                {
+                                                    Text(
+                                                        "Note: Track \(departure.TrackCurrent)"
+                                                    )
+                                                    .foregroundColor(.orange)
+                                                    .font(.subheadline)
+                                                }
+                                                if departure.TrainArrived != nil
+                                                    && Int(
+                                                        departure
+                                                            .MinutesToDeparture
+                                                    ) <= 1
+                                                {
+                                                    Text("Train arrived")
+                                                        .foregroundColor(.green)
+                                                        .font(.subheadline)
+                                                }
+                                                if departure.TrainDelayed {
+                                                    Text("Train delayed")
+                                                        .foregroundColor(
+                                                            .orange
+                                                        )
+                                                        .font(.subheadline)
+                                                }
                                             }
                                         }
                                         .padding(.leading, 5.0)
