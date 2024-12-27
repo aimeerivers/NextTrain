@@ -111,18 +111,6 @@ struct DepartureView: View {
                                                     .foregroundColor(.red)
                                                     .font(.subheadline)
                                             } else {
-                                                if departure.TrackOriginal
-                                                    != nil
-                                                    && departure.TrackOriginal
-                                                        != departure
-                                                        .TrackCurrent
-                                                {
-                                                    Text(
-                                                        "Note: Track \(departure.TrackCurrent)"
-                                                    )
-                                                    .foregroundColor(.orange)
-                                                    .font(.subheadline)
-                                                }
                                                 if departure.TrainArrived != nil
                                                     && Int(
                                                         departure
@@ -139,6 +127,18 @@ struct DepartureView: View {
                                                             .orange
                                                         )
                                                         .font(.subheadline)
+                                                }
+                                                if departure.TrackOriginal
+                                                    != nil
+                                                    && departure.TrackOriginal
+                                                        != departure
+                                                        .TrackCurrent
+                                                {
+                                                    Text(
+                                                        "Note: Track \(departure.TrackCurrent)"
+                                                    )
+                                                    .foregroundColor(.orange)
+                                                    .font(.subheadline)
                                                 }
                                             }
                                         }
