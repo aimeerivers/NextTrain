@@ -38,7 +38,7 @@ struct ContentView: View {
                                         ForEach(station.lines, id: \.self) {
                                             line in
                                             Text(line.capitalized).font(
-                                                .subheadline
+                                                .footnote
                                             )
                                             .foregroundColor(.white)
                                             .padding(.horizontal, 4.0)
@@ -67,7 +67,7 @@ struct ContentView: View {
                                         ForEach(station.lines, id: \.self) {
                                             line in
                                             Text(line.capitalized).font(
-                                                .subheadline
+                                                .footnote
                                             )
                                             .foregroundColor(.white)
                                             .padding(.horizontal, 4.0)
