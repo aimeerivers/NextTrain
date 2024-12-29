@@ -27,7 +27,7 @@ struct ContentView: View {
             NavigationView {
                 List {
                     if searchText.isEmpty {
-                        ForEach(viewModel.stations.prefix(5)) { station in
+                        ForEach(viewModel.stations) { station in
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
