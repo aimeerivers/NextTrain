@@ -40,6 +40,7 @@ struct ContentView: View {
                                             Text(line.capitalized).font(
                                                 .footnote
                                             )
+                                            .fontWeight(.bold)
                                             .foregroundColor(.white)
                                             .padding(.horizontal, 4.0)
                                             .background(
@@ -69,6 +70,7 @@ struct ContentView: View {
                                             Text(line.capitalized).font(
                                                 .footnote
                                             )
+                                            .fontWeight(.bold)
                                             .foregroundColor(.white)
                                             .padding(.horizontal, 4.0)
                                             .background(
