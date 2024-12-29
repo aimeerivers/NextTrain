@@ -72,7 +72,7 @@ struct ContentView: View {
                         oldLocation, newLocation in
                         if let newLocation = newLocation {
                             let now = Date()
-                            if now.timeIntervalSince(lastUpdate) > 3 {
+                            if now.timeIntervalSince(lastUpdate) > 10 {
                                 lastUpdate = now
                                 viewModel.updateNearbyStations(
                                     for: newLocation.latitude,
