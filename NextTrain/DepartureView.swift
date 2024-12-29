@@ -118,10 +118,17 @@ struct DepartureView: View {
                                                     .foregroundColor(.red)
                                                     .font(.subheadline)
                                             } else {
-                                                if let viaStation =
-                                                    viaStationName(
-                                                        for: departure.Routes[0]
-                                                            .ViaStation)
+                                                if departure.Routes[0]
+                                                    .ViaStation
+                                                    != departure.TargetStation[
+                                                        0],
+                                                    let viaStation =
+                                                        viaStationName(
+                                                            for:
+                                                                departure.Routes[
+                                                                    0
+                                                                ]
+                                                                .ViaStation)
                                                 {
                                                     Text("via \(viaStation)")
                                                         .foregroundColor(.gray)
