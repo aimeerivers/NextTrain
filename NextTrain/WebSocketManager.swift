@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Root: Codable {
     let data: TrainData
@@ -54,7 +55,8 @@ struct Departure: Identifiable, Codable {
         TargetStation = try container.decode(
             [String].self, forKey: .TargetStation)
         TrackCurrent = try container.decode(String.self, forKey: .TrackCurrent)
-        TrackOriginal = try container.decodeIfPresent(String.self, forKey: .TrackOriginal)
+        TrackOriginal = try container.decodeIfPresent(
+            String.self, forKey: .TrackOriginal)
         IsCancelled = try container.decode(Bool.self, forKey: .IsCancelled)
         TrainArrived = try container.decodeIfPresent(
             String.self, forKey: .TrainArrived)
@@ -66,12 +68,24 @@ struct Departure: Identifiable, Codable {
 class WebSocketManager: NSObject, ObservableObject {
     private var webSocket: URLSessionWebSocketTask?
     @Published var departures: [Departure] = []
+    private var stationId: String?
 
     override init() {
         super.init()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     func connect(stationId: String) {
+        self.stationId = stationId
         let urlString =
             "wss://api.mittog.dk/api/ws/stog/departure/\(stationId)/"
         guard let url = URL(string: urlString) else {
@@ -86,6 +100,14 @@ class WebSocketManager: NSObject, ObservableObject {
         webSocket?.resume()
 
         receive()
+    }
+
+    @objc private func applicationDidBecomeActive() {
+        guard let stationId = stationId else { return }
+        if webSocket == nil || webSocket?.state != .running {
+            print("Reconnecting WebSocket for station \(stationId)")
+            connect(stationId: stationId)
+        }
     }
 
     func receive() {
