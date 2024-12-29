@@ -88,6 +88,7 @@ struct DepartureView: View {
                                     HStack {
                                         Text(departure.LineName.capitalized)
                                             .font(.headline)
+                                            .fontWeight(.bold)
                                             .foregroundColor(.white)
                                             .padding(.horizontal, 5.0)
                                             .background(
@@ -195,5 +196,5 @@ struct DepartureView: View {
         // station: allStations.randomElement()!
         station: Station(
             id: "KH", name: "København H", latitude: 55.672778,
-            longitude: 12.564444))
+            longitude: 12.564444, lines: ["A", "B", "BX", "C", "E", "H"]))
 }

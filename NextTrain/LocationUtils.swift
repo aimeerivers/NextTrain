@@ -14,6 +14,7 @@ struct Station: Identifiable {
     let name: String
     let latitude: Double
     let longitude: Double
+    let lines: [String]
     var distance: Double?
 }
 

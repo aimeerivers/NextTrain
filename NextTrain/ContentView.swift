@@ -31,10 +31,22 @@ struct ContentView: View {
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
-                                VStack {
+                                VStack(alignment: .leading) {
                                     Text(station.name)
                                         .font(.headline)
-                                        .padding(.vertical, 8.0)
+                                    HStack {
+                                        ForEach(station.lines, id: \.self) {
+                                            line in
+                                            Text(line.capitalized).font(
+                                                .subheadline
+                                            )
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 4.0)
+                                            .background(
+                                                Color(line)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -48,10 +60,22 @@ struct ContentView: View {
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
-                                VStack {
+                                VStack(alignment: .leading) {
                                     Text(station.name)
                                         .font(.headline)
-                                        .padding(.vertical, 8.0)
+                                    HStack {
+                                        ForEach(station.lines, id: \.self) {
+                                            line in
+                                            Text(line.capitalized).font(
+                                                .subheadline
+                                            )
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 4.0)
+                                            .background(
+                                                Color(line)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
