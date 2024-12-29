@@ -28,7 +28,7 @@ struct StationRow: View {
                     Text(line.capitalized)
                         .font(.footnote)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundColor(line == "F" ? .black : .white)
                         .padding(.horizontal, 4.0)
                         .background(Color(line))
                 }

@@ -89,7 +89,10 @@ struct DepartureView: View {
                                         Text(departure.LineName.capitalized)
                                             .font(.headline)
                                             .fontWeight(.bold)
-                                            .foregroundColor(.white)
+                                            .foregroundColor(
+                                                departure.LineName == "F"
+                                                    ? .black : .white
+                                            )
                                             .padding(.horizontal, 5.0)
                                             .background(
                                                 Color(departure.LineName)
