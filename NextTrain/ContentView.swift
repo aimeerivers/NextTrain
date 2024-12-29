@@ -16,6 +16,27 @@ extension CLLocationCoordinate2D: @retroactive Equatable {
     }
 }
 
+struct StationRow: View {
+    let station: Station
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(station.name)
+                .font(.headline)
+            HStack {
+                ForEach(station.lines, id: \.self) { line in
+                    Text(line.capitalized)
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 4.0)
+                        .background(Color(line))
+                }
+            }
+        }
+    }
+}
+
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var viewModel = NearbyStationsViewModel()
@@ -31,24 +52,7 @@ struct ContentView: View {
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
-                                VStack(alignment: .leading) {
-                                    Text(station.name)
-                                        .font(.headline)
-                                    HStack {
-                                        ForEach(station.lines, id: \.self) {
-                                            line in
-                                            Text(line.capitalized).font(
-                                                .footnote
-                                            )
-                                            .fontWeight(.bold)
-                                            .foregroundColor(.white)
-                                            .padding(.horizontal, 4.0)
-                                            .background(
-                                                Color(line)
-                                            )
-                                        }
-                                    }
-                                }
+                                StationRow(station: station)
                             }
                         }
                     } else {
@@ -61,24 +65,7 @@ struct ContentView: View {
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
-                                VStack(alignment: .leading) {
-                                    Text(station.name)
-                                        .font(.headline)
-                                    HStack {
-                                        ForEach(station.lines, id: \.self) {
-                                            line in
-                                            Text(line.capitalized).font(
-                                                .footnote
-                                            )
-                                            .fontWeight(.bold)
-                                            .foregroundColor(.white)
-                                            .padding(.horizontal, 4.0)
-                                            .background(
-                                                Color(line)
-                                            )
-                                        }
-                                    }
-                                }
+                                StationRow(station: station)
                             }
                         }
                     }
