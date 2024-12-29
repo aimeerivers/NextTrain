@@ -86,7 +86,8 @@ struct DepartureView: View {
                             ForEach(groupedDepartures[track]!) { departure in
                                 VStack(alignment: .leading) {
                                     HStack {
-                                        Text(departure.LineName).font(.headline)
+                                        Text(departure.LineName.capitalized)
+                                            .font(.headline)
                                             .foregroundColor(.white)
                                             .padding(.horizontal, 5.0)
                                             .background(
