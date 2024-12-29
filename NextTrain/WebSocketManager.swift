@@ -20,6 +20,14 @@ struct TrainData: Codable {
     }
 }
 
+struct Route: Codable {
+    let ViaStation: String?
+
+    enum CodingKeys: String, CodingKey {
+        case ViaStation
+    }
+}
+
 struct Departure: Identifiable, Codable {
     let id: String
     let LineName: String
@@ -31,6 +39,7 @@ struct Departure: Identifiable, Codable {
     let IsCancelled: Bool
     let TrainArrived: String?
     let TrainDeparted: String?
+    let Routes: [Route]
 
     enum CodingKeys: String, CodingKey {
         case id = "TrainId"
@@ -42,6 +51,7 @@ struct Departure: Identifiable, Codable {
         case IsCancelled
         case TrainArrived
         case TrainDeparted
+        case Routes
     }
 
     init(from decoder: Decoder) throws {
@@ -62,6 +72,7 @@ struct Departure: Identifiable, Codable {
             String.self, forKey: .TrainArrived)
         TrainDeparted = try container.decodeIfPresent(
             String.self, forKey: .TrainDeparted)
+        Routes = try container.decode([Route].self, forKey: .Routes)
     }
 }
 

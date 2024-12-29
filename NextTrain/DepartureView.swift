@@ -43,6 +43,11 @@ func timeFormatted(delayed: Bool, minutes: Float) -> String {
     }
 }
 
+func viaStationName(for id: String?) -> String? {
+    guard let id = id else { return nil }
+    return allStations.first(where: { $0.id == id })?.name
+}
+
 struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
 
@@ -111,6 +116,11 @@ struct DepartureView: View {
                                                     .foregroundColor(.red)
                                                     .font(.subheadline)
                                             } else {
+                                                if let viaStation = viaStationName(for: departure.Routes[0].ViaStation) {
+                                                    Text("via \(viaStation)")
+                                                        .foregroundColor(.gray)
+                                                        .font(.subheadline)
+                                                }
                                                 if departure.TrainArrived != nil
                                                     && Int(
                                                         departure
