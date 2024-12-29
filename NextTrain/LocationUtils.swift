@@ -14,20 +14,7 @@ struct Station: Identifiable {
     let name: String
     let latitude: Double
     let longitude: Double
-
-    var distance: Double?  // To store the calculated distance for display
-    var distanceFormatted: String? {
-        guard let distance = distance else { return nil }
-        if distance >= 100000 {
-            return String(format: "%.0f km", distance / 1000)
-        } else if distance >= 200 {
-            return String(format: "%.1f km", distance / 1000)
-        } else if distance < 20 {
-            return "under 20 meters"
-        } else {
-            return String(format: "%.0f meters", distance)
-        }
-    }
+    var distance: Double?
 }
 
 // Utility functions

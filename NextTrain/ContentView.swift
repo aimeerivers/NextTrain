@@ -34,12 +34,6 @@ struct ContentView: View {
                                 VStack(alignment: .leading) {
                                     Text(station.name)
                                         .font(.headline)
-                                    if let distance = station.distanceFormatted
-                                    {
-                                        Text(distance)
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
-                                    }
                                 }
                             }
                         }
@@ -56,12 +50,6 @@ struct ContentView: View {
                                 VStack(alignment: .leading) {
                                     Text(station.name)
                                         .font(.headline)
-                                    if let distance = station.distanceFormatted
-                                    {
-                                        Text(distance)
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
-                                    }
                                 }
                             }
                         }
