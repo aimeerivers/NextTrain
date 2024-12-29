@@ -39,7 +39,7 @@ struct ContentView: View {
                         }
                     } else {
                         ForEach(
-                            viewModel.stations.filter {
+                            allStations.filter {
                                 $0.name.lowercased().contains(
                                     searchText.lowercased())
                             }
@@ -55,7 +55,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle("Nearby Stations")
+                .navigationTitle("Stations")
                 .searchable(text: $searchText)
             }
 
