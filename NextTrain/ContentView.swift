@@ -31,9 +31,10 @@ struct ContentView: View {
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
-                                VStack(alignment: .leading) {
+                                VStack {
                                     Text(station.name)
                                         .font(.headline)
+                                        .padding(.vertical, 8.0)
                                 }
                             }
                         }
@@ -47,9 +48,10 @@ struct ContentView: View {
                             NavigationLink(
                                 destination: DepartureView(station: station)
                             ) {
-                                VStack(alignment: .leading) {
+                                VStack {
                                     Text(station.name)
                                         .font(.headline)
+                                        .padding(.vertical, 8.0)
                                 }
                             }
                         }
