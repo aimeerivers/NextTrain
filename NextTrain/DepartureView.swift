@@ -21,10 +21,7 @@ func nextTwoDeparturesPerTrack(from departures: [Departure]) -> [String:
     // For each track, sort by MinutesToDeparture and pick the next two departures
     var result: [String: [Departure]] = [:]
     for (track, trackDepartures) in groupedByTrack {
-        let sortedDepartures = trackDepartures.sorted {
-            $0.MinutesToDeparture < $1.MinutesToDeparture
-        }
-        result[track] = Array(sortedDepartures.prefix(2))
+        result[track] = Array(trackDepartures.prefix(2))
     }
     return result
 }
