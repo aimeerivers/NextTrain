@@ -33,6 +33,7 @@ struct StationRow: View {
                         .background(Color(line))
                 }
             }
+            .padding(.all, 1.0)
         }
     }
 }
