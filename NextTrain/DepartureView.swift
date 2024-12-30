@@ -49,13 +49,16 @@ struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
     @State private var selectedDeparture: Departure?
     @State private var showingDetail = false
+    @State private var isLoading = true
 
     let station: Station
 
     var body: some View {
         VStack {
-            if webSocketManager.departures.isEmpty {
-                Text("Loading departures...")
+            if isLoading {
+                ProgressView("Loading departures...")
+            } else if webSocketManager.departures.isEmpty {
+                Text("No departures available.")
             } else {
                 let groupedDepartures = nextTwoDeparturesPerTrack(
                     from: webSocketManager.departures)
@@ -221,7 +224,11 @@ struct DepartureView: View {
             }
         }
         .onAppear {
+            isLoading = true
             webSocketManager.connect(stationId: station.id)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isLoading = false
+            }
         }
         .onDisappear {
             webSocketManager.disconnect()
