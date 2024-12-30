@@ -45,6 +45,7 @@ let allStations: [Station] = [
     Station(id: "HUT", name: "Husum", latitude: 55.71, longitude: 12.463333, lines: ["C", "H"]),
     Station(id: "HIT", name: "Hvidovre", latitude: 55.664444, longitude: 12.475, lines: ["B"]),
     Station(id: "HTÅ", name: "Høje Taastrup", latitude: 55.648722, longitude: 12.269667, lines: ["B", "BX"]),
+    Station(id: "HØV", name: "Høvelte", latitude: 55.851111, longitude: 12.388333, lines: ["A"]),
     Station(id: "IH", name: "Ishøj", latitude: 55.613333, longitude: 12.357778, lines: ["A", "E"]),
     Station(id: "IST", name: "Islev", latitude: 55.699167, longitude: 12.469167, lines: ["C", "H"]),
     Station(id: "JSI", name: "Jersie", latitude: 55.521111, longitude: 12.20875, lines: ["A", "E"]),
