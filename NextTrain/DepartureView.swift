@@ -30,8 +30,8 @@ func stationName(for id: String) -> String {
     return allStations.first(where: { $0.id == id })?.name ?? id
 }
 
-func timeFormatted(delayed: Bool, minutes: Float) -> String {
-    if delayed {
+func timeFormatted(awaitingTime: Bool, minutes: Float) -> String {
+    if awaitingTime {
         return "? min"
     } else if minutes.truncatingRemainder(dividingBy: 1) == 0 {
         return "\(Int(minutes)) min"
@@ -158,12 +158,12 @@ struct DepartureView: View {
                                                             )
                                                             .font(.subheadline)
                                                     }
-                                                    if departure.TrainDelayed
+                                                    if departure.AwaitingTime
                                                         && departure
                                                             .TrainArrived
                                                             == nil
                                                     {
-                                                        Text("Train delayed")
+                                                        Text("Awaiting time")
                                                             .foregroundColor(
                                                                 .orange
                                                             )
@@ -192,8 +192,8 @@ struct DepartureView: View {
 
                                             Text(
                                                 timeFormatted(
-                                                    delayed: departure
-                                                        .TrainDelayed,
+                                                    awaitingTime: departure
+                                                        .AwaitingTime,
                                                     minutes: departure
                                                         .MinutesToDeparture)
                                             )

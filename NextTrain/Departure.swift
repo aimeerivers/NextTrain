@@ -31,7 +31,7 @@ struct Departure: Identifiable, Codable {
     let id: String
     let LineName: String
     let MinutesToDeparture: Float
-    let TrainDelayed: Bool
+    let AwaitingTime: Bool
     let TargetStation: [String]
     let TrackCurrent: String
     let TrackOriginal: String?
@@ -62,7 +62,7 @@ struct Departure: Identifiable, Codable {
         let minutesToDeparture = try container.decodeIfPresent(
             Float.self, forKey: .MinutesToDeparture)
         MinutesToDeparture = minutesToDeparture ?? 0
-        TrainDelayed = minutesToDeparture == nil
+        AwaitingTime = minutesToDeparture == nil
         TargetStation = try container.decode(
             [String].self, forKey: .TargetStation)
         TrackCurrent = try container.decode(String.self, forKey: .TrackCurrent)
