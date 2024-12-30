@@ -48,7 +48,6 @@ func viaStationName(for id: String?) -> String? {
 struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
     @State private var selectedDeparture: Departure?
-    @State private var showingDetail = false
     @State private var isLoading = true
 
     let station: Station
@@ -91,7 +90,6 @@ struct DepartureView: View {
                             ForEach(groupedDepartures[track]!) { departure in
                                 Button(action: {
                                     selectedDeparture = departure
-                                    showingDetail = true
                                 }) {
                                     VStack(alignment: .leading) {
                                         HStack {
@@ -217,11 +215,8 @@ struct DepartureView: View {
                 }
             }
         }
-        .sheet(isPresented: $showingDetail) {
-            if let selectedDeparture = selectedDeparture {
-                DepartureDetailView(departure: selectedDeparture)
-                    .padding()
-            }
+        .sheet(item: $selectedDeparture) { departure in
+            DepartureDetailView(departure: departure).padding()
         }
         .onAppear {
             isLoading = true
