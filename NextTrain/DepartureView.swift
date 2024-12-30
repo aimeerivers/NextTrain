@@ -159,17 +159,6 @@ struct DepartureView: View {
                                                             )
                                                             .font(.subheadline)
                                                     }
-                                                    if departure.TrainDelayed
-                                                        && departure
-                                                            .TrainArrived
-                                                            == nil
-                                                    {
-                                                        Text("Train delayed")
-                                                            .foregroundColor(
-                                                                .orange
-                                                            )
-                                                            .font(.subheadline)
-                                                    }
                                                     if departure.AwaitingTime
                                                         && departure
                                                             .TrainArrived
