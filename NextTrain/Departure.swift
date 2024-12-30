@@ -79,6 +79,7 @@ struct Departure: Identifiable, Codable {
     let Routes: [Route]
     let ScheduleTimeDeparture: Date?
     let EstimatedTimeDeparture: Date?
+    let DepartureTimeDifference: Bool
     let TrainDelayed: Bool
 
     enum CodingKeys: String, CodingKey {
@@ -137,9 +138,14 @@ struct Departure: Identifiable, Codable {
             EstimatedTimeDeparture = nil
         }
 
-        TrainDelayed =
+        DepartureTimeDifference =
             formattedTime(from: ScheduleTimeDeparture)
             != formattedTime(from: EstimatedTimeDeparture)
+
+        TrainDelayed =
+            (ScheduleTimeDeparture != nil && EstimatedTimeDeparture != nil
+                && EstimatedTimeDeparture!.timeIntervalSince(
+                    ScheduleTimeDeparture!) > (3 * 60))
     }
 }
 

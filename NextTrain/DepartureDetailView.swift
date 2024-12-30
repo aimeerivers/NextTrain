@@ -53,7 +53,7 @@ struct DepartureDetailView: View {
                     Spacer()
 
                     VStack {
-                        if departure.TrainDelayed {
+                        if departure.DepartureTimeDifference {
                             Text(
                                 formattedTime(
                                     from: departure.ScheduleTimeDeparture)
@@ -103,3 +103,4 @@ struct DepartureDetailView: View {
 #Preview {
     DepartureDetailView(departure: Departure.sample)
 }
+    
