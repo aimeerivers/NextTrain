@@ -69,6 +69,7 @@ struct DepartureDetailView: View {
                     }
 
                 }
+                .padding(.bottom)
 
                 ScrollView {
                     LazyVGrid(columns: [
