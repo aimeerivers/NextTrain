@@ -46,6 +46,8 @@ struct DepartureDetailView: View {
                 .padding(.leading, 5.0)
 
                 Spacer()
+
+                Text(formattedTime(from: departure.EstimatedTimeDeparture))
             }
             Text("Train ID: \(departure.id)")
                 .font(.footnote)
@@ -55,6 +57,15 @@ struct DepartureDetailView: View {
         }
         .navigationTitle("Departure Details")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func formattedTime(from date: Date?) -> String {
+        guard let date = date else {
+            return ""
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: date)
     }
 }
 

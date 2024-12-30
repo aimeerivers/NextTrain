@@ -39,6 +39,7 @@ struct Departure: Identifiable, Codable {
     let TrainArrived: String?
     let TrainDeparted: String?
     let Routes: [Route]
+    let EstimatedTimeDeparture: Date?
 
     enum CodingKeys: String, CodingKey {
         case id = "TrainId"
@@ -51,6 +52,7 @@ struct Departure: Identifiable, Codable {
         case TrainArrived
         case TrainDeparted
         case Routes
+        case EstimatedTimeDeparture
     }
 
     init(from decoder: Decoder) throws {
@@ -72,6 +74,18 @@ struct Departure: Identifiable, Codable {
         TrainDeparted = try container.decodeIfPresent(
             String.self, forKey: .TrainDeparted)
         Routes = try container.decode([Route].self, forKey: .Routes)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+
+        if let estimatedTimeDepartureString = try container.decodeIfPresent(
+            String.self, forKey: .EstimatedTimeDeparture)
+        {
+            EstimatedTimeDeparture = dateFormatter.date(
+                from: estimatedTimeDepartureString)
+        } else {
+            EstimatedTimeDeparture = nil
+        }
     }
 }
 
@@ -83,7 +97,7 @@ extension Departure {
                     "TOC": "DSB",
                     "Product": "STRAIN",
                     "LineName": "C",
-                    "ScheduleTimeArrival": "30-12-2024 14:13:45",
+                    "EstimatedTimeDeparture": "30-12-2024 14:13:45",
                     "ScheduleTimeDeparture": "30-12-2024 14:14:00",
                     "EstimatedTimeArrival": "30-12-2024 14:14:52",
                     "EstimatedTimeDeparture": "30-12-2024 14:15:07",
