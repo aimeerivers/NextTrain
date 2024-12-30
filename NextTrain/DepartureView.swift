@@ -47,6 +47,8 @@ func viaStationName(for id: String?) -> String? {
 
 struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
+    @State private var selectedDeparture: Departure?
+    @State private var showingDetail = false
 
     let station: Station
 
@@ -184,6 +186,10 @@ struct DepartureView: View {
                                         )
                                         .strikethrough(departure.IsCancelled)
                                     }
+                                    .onTapGesture {
+                                        selectedDeparture = departure
+                                        showingDetail = true
+                                    }
                                 }
                             }
                         }
@@ -191,6 +197,31 @@ struct DepartureView: View {
                 }
             }
         }
+        .overlay(
+            Group {
+                if showingDetail, let selectedDeparture = selectedDeparture {
+                    Color.black.opacity(0.4)
+                        .edgesIgnoringSafeArea(.all)
+                        .onTapGesture {
+                            showingDetail = false
+                        }
+                    GeometryReader { geometry in
+                        VStack {
+                            DepartureDetailView(departure: selectedDeparture)
+                                .frame(
+                                    width: geometry.size.width * 0.8,
+                                    height: geometry.size.height * 0.6
+                                )
+                                .padding(.all)
+                                .background(Color(UIColor.systemBackground))
+                                .cornerRadius(10)
+                                .shadow(radius: 10)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                }
+            }
+        )
         .onAppear {
             webSocketManager.connect(stationId: station.id)
         }
