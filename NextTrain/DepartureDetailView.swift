@@ -10,6 +10,7 @@ import SwiftUI
 struct DepartureDetailView: View {
     let departure: Departure
     @State private var isLoading = true
+    @State private var stations: [RouteStation] = []
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -68,6 +69,18 @@ struct DepartureDetailView: View {
                     }
 
                 }
+
+                ForEach($stations, id: \.StationId) { $station in
+                    HStack {
+                        Text(formattedTime(from: station.ExpectedDateTime))
+                            .font(.subheadline)
+                        Text(stationName(for: station.StationId)).font(
+                            .subheadline)
+                        Spacer()
+                    }
+                    .padding(.all, 1.0)
+                }
+
                 Text("Train ID: \(departure.id)")
                     .font(.footnote)
                     .foregroundColor(.gray)
@@ -80,6 +93,7 @@ struct DepartureDetailView: View {
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 isLoading = false
+                stations = departure.Routes[0].Stations
             }
         }
     }

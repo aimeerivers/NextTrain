@@ -19,11 +19,49 @@ struct TrainData: Codable {
     }
 }
 
+struct RouteStation: Codable {
+    let StationId: String
+    let ExpectedDateTime: Date?
+    let IsCancelled: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case StationId
+        case ExpectedDateTime
+        case IsCancelled
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        StationId = try container.decode(String.self, forKey: .StationId)
+        IsCancelled = try container.decode(Bool.self, forKey: .IsCancelled)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+
+        if let expectedDateTimeString = try container.decodeIfPresent(
+            String.self, forKey: .ExpectedDateTime)
+        {
+            ExpectedDateTime = dateFormatter.date(from: expectedDateTimeString)
+        } else {
+            ExpectedDateTime = nil
+        }
+    }
+}
+
 struct Route: Codable {
     let ViaStation: String?
+    let Stations: [RouteStation]
 
     enum CodingKeys: String, CodingKey {
         case ViaStation
+        case Stations
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        ViaStation = try container.decodeIfPresent(
+            String.self, forKey: .ViaStation)
+        Stations = try container.decode([RouteStation].self, forKey: .Stations)
     }
 }
 

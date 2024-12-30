@@ -227,7 +227,9 @@ struct DepartureView: View {
             }
         }
         .sheet(item: $selectedDeparture) { departure in
-            DepartureDetailView(departure: departure).padding()
+            ScrollView {
+                DepartureDetailView(departure: departure).padding()
+            }
         }
         .onAppear {
             isLoading = true
