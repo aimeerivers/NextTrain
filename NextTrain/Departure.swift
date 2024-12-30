@@ -39,7 +39,9 @@ struct Departure: Identifiable, Codable {
     let TrainArrived: String?
     let TrainDeparted: String?
     let Routes: [Route]
+    let ScheduleTimeDeparture: Date?
     let EstimatedTimeDeparture: Date?
+    let TrainDelayed: Bool
 
     enum CodingKeys: String, CodingKey {
         case id = "TrainId"
@@ -52,6 +54,7 @@ struct Departure: Identifiable, Codable {
         case TrainArrived
         case TrainDeparted
         case Routes
+        case ScheduleTimeDeparture
         case EstimatedTimeDeparture
     }
 
@@ -78,6 +81,15 @@ struct Departure: Identifiable, Codable {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
 
+        if let scheduleTimeDepartureString = try container.decodeIfPresent(
+            String.self, forKey: .ScheduleTimeDeparture)
+        {
+            ScheduleTimeDeparture = dateFormatter.date(
+                from: scheduleTimeDepartureString)
+        } else {
+            ScheduleTimeDeparture = nil
+        }
+
         if let estimatedTimeDepartureString = try container.decodeIfPresent(
             String.self, forKey: .EstimatedTimeDeparture)
         {
@@ -86,6 +98,10 @@ struct Departure: Identifiable, Codable {
         } else {
             EstimatedTimeDeparture = nil
         }
+
+        TrainDelayed =
+            formattedTime(from: ScheduleTimeDeparture)
+            != formattedTime(from: EstimatedTimeDeparture)
     }
 }
 
@@ -93,16 +109,16 @@ extension Departure {
     static var sample: Departure {
         let json = """
             {
-                    "TrainId": "633143",
+                    "TrainId": "634149",
                     "TOC": "DSB",
                     "Product": "STRAIN",
                     "LineName": "C",
-                    "EstimatedTimeDeparture": "30-12-2024 14:13:45",
-                    "ScheduleTimeDeparture": "30-12-2024 14:14:00",
-                    "EstimatedTimeArrival": "30-12-2024 14:14:52",
-                    "EstimatedTimeDeparture": "30-12-2024 14:15:07",
+                    "ScheduleTimeArrival": "30-12-2024 16:03:45",
+                    "ScheduleTimeDeparture": "30-12-2024 16:04:00",
+                    "EstimatedTimeArrival": "30-12-2024 16:05:07",
+                    "EstimatedTimeDeparture": "30-12-2024 16:05:22",
                     "DepartureDirection": "UP",
-                    "MinutesToDeparture": 1.0,
+                    "MinutesToDeparture": 7.0,
                     "TargetStation": [
                       "KL"
                     ],
@@ -117,107 +133,107 @@ extension Departure {
                         "Stations": [
                           {
                             "StationId": "HER",
-                            "ExpectedDateTime": "30-12-2024 14:17:47",
+                            "ExpectedDateTime": "30-12-2024 16:08:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "HUT",
-                            "ExpectedDateTime": "30-12-2024 14:19:47",
+                            "ExpectedDateTime": "30-12-2024 16:10:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "IST",
-                            "ExpectedDateTime": "30-12-2024 14:21:52",
+                            "ExpectedDateTime": "30-12-2024 16:12:07",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "JYT",
-                            "ExpectedDateTime": "30-12-2024 14:23:57",
+                            "ExpectedDateTime": "30-12-2024 16:14:12",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "VAN",
-                            "ExpectedDateTime": "30-12-2024 14:24:42",
+                            "ExpectedDateTime": "30-12-2024 16:14:57",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "FL",
-                            "ExpectedDateTime": "30-12-2024 14:26:47",
+                            "ExpectedDateTime": "30-12-2024 16:17:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "PBT",
-                            "ExpectedDateTime": "30-12-2024 14:27:57",
+                            "ExpectedDateTime": "30-12-2024 16:18:12",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "VAT",
-                            "ExpectedDateTime": "30-12-2024 14:29:52",
+                            "ExpectedDateTime": "30-12-2024 16:20:07",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "VAL",
-                            "ExpectedDateTime": "30-12-2024 14:31:42",
+                            "ExpectedDateTime": "30-12-2024 16:21:57",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "CB",
-                            "ExpectedDateTime": "30-12-2024 14:33:47",
+                            "ExpectedDateTime": "30-12-2024 16:24:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "DBT",
-                            "ExpectedDateTime": "30-12-2024 14:35:47",
+                            "ExpectedDateTime": "30-12-2024 16:26:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "KH",
-                            "ExpectedDateTime": "30-12-2024 14:39:07",
+                            "ExpectedDateTime": "30-12-2024 16:29:22",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "VPT",
-                            "ExpectedDateTime": "30-12-2024 14:40:47",
+                            "ExpectedDateTime": "30-12-2024 16:31:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "KN",
-                            "ExpectedDateTime": "30-12-2024 14:42:42",
+                            "ExpectedDateTime": "30-12-2024 16:32:57",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "KK",
-                            "ExpectedDateTime": "30-12-2024 14:44:42",
+                            "ExpectedDateTime": "30-12-2024 16:34:57",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "NHT",
-                            "ExpectedDateTime": "30-12-2024 14:47:42",
+                            "ExpectedDateTime": "30-12-2024 16:37:57",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "SAM",
-                            "ExpectedDateTime": "30-12-2024 14:49:42",
+                            "ExpectedDateTime": "30-12-2024 16:39:57",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "HL",
-                            "ExpectedDateTime": "30-12-2024 14:51:37",
+                            "ExpectedDateTime": "30-12-2024 16:41:52",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "CH",
-                            "ExpectedDateTime": "30-12-2024 14:54:47",
+                            "ExpectedDateTime": "30-12-2024 16:45:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "OP",
-                            "ExpectedDateTime": "30-12-2024 14:56:47",
+                            "ExpectedDateTime": "30-12-2024 16:47:02",
                             "IsCancelled": false
                           },
                           {
                             "StationId": "KL",
-                            "ExpectedDateTime": "30-12-2024 15:00:07",
+                            "ExpectedDateTime": "30-12-2024 16:50:22",
                             "IsCancelled": false
                           }
                         ]
@@ -231,4 +247,13 @@ extension Departure {
         let decoder = JSONDecoder()
         return try! decoder.decode(Departure.self, from: data)
     }
+}
+
+func formattedTime(from date: Date?) -> String {
+    guard let date = date else {
+        return ""
+    }
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm"
+    return formatter.string(from: date)
 }

@@ -51,7 +51,22 @@ struct DepartureDetailView: View {
 
                     Spacer()
 
-                    Text(formattedTime(from: departure.EstimatedTimeDeparture))
+                    VStack {
+                        if departure.TrainDelayed {
+                            Text(
+                                formattedTime(
+                                    from: departure.ScheduleTimeDeparture)
+                            )
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .strikethrough()
+                        }
+                        Text(
+                            formattedTime(
+                                from: departure.EstimatedTimeDeparture)
+                        ).bold()
+                    }
+
                 }
                 Text("Train ID: \(departure.id)")
                     .font(.footnote)
@@ -67,15 +82,6 @@ struct DepartureDetailView: View {
                 isLoading = false
             }
         }
-    }
-
-    private func formattedTime(from date: Date?) -> String {
-        guard let date = date else {
-            return ""
-        }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
     }
 }
 
