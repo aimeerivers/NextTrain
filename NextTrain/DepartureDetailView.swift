@@ -70,17 +70,19 @@ struct DepartureDetailView: View {
 
                 }
 
-                ForEach($stations, id: \.StationId) { $station in
-                    HStack {
+                LazyVGrid(columns: [
+                    GridItem(.fixed(50), alignment: .leading),
+                    GridItem(.flexible(), alignment: .leading),
+                ]) {
+                    ForEach($stations, id: \.StationId) { $station in
                         Text(formattedTime(from: station.ExpectedDateTime))
                             .font(.subheadline)
-                        Text(stationName(for: station.StationId)).font(
-                            .subheadline)
-                        Spacer()
+                        Text(stationName(for: station.StationId))
+                            .font(.subheadline)
                     }
                     .padding(.all, 1.0)
                 }
-                
+
                 Spacer()
             }
         }
