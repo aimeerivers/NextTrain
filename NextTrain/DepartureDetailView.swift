@@ -80,11 +80,7 @@ struct DepartureDetailView: View {
                     }
                     .padding(.all, 1.0)
                 }
-
-                Text("Train ID: \(departure.id)")
-                    .font(.footnote)
-                    .foregroundColor(.gray)
-                    .padding()
+                
                 Spacer()
             }
         }
