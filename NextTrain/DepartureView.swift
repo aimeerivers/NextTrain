@@ -86,142 +86,140 @@ struct DepartureView: View {
                     ) { track in
                         Section(header: Text("Track \(track)")) {
                             ForEach(groupedDepartures[track]!) { departure in
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Text(departure.LineName.capitalized)
-                                            .font(.headline)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(
-                                                departure.LineName == "F"
-                                                    ? .black : .white
-                                            )
-                                            .padding(.horizontal, 5.0)
-                                            .background(
-                                                Color(departure.LineName)
-                                            )
+                                Button(action: {
+                                    selectedDeparture = departure
+                                    showingDetail = true
+                                }) {
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text(departure.LineName.capitalized)
+                                                .font(.headline)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(
+                                                    departure.LineName == "F"
+                                                        ? .black : .white
+                                                )
+                                                .padding(.horizontal, 5.0)
+                                                .background(
+                                                    Color(departure.LineName)
+                                                )
 
-                                        VStack(alignment: .leading) {
+                                            VStack(alignment: .leading) {
+                                                Text(
+                                                    stationName(
+                                                        for:
+                                                            departure
+                                                            .TargetStation[
+                                                                0])
+                                                )
+                                                .font(.headline)
+                                                .foregroundColor(
+                                                    departure.IsCancelled
+                                                        ? .red : .primary
+                                                )
+                                                .strikethrough(
+                                                    departure.IsCancelled)
+
+                                                if departure.IsCancelled {
+                                                    Text("Cancelled")
+                                                        .foregroundColor(.red)
+                                                        .font(.subheadline)
+                                                } else {
+                                                    if departure.Routes[0]
+                                                        .ViaStation
+                                                        != departure
+                                                        .TargetStation[
+                                                            0],
+                                                        let viaStation =
+                                                            viaStationName(
+                                                                for:
+                                                                    departure
+                                                                    .Routes[
+                                                                        0
+                                                                    ]
+                                                                    .ViaStation)
+                                                    {
+                                                        Text(
+                                                            "via \(viaStation)"
+                                                        )
+                                                        .foregroundColor(.gray)
+                                                        .font(.subheadline)
+                                                    }
+                                                    if departure.TrainArrived
+                                                        != nil
+                                                        && Int(
+                                                            departure
+                                                                .MinutesToDeparture
+                                                        ) <= 1
+                                                    {
+                                                        Text("Train arrived")
+                                                            .foregroundColor(
+                                                                .green
+                                                            )
+                                                            .font(.subheadline)
+                                                    }
+                                                    if departure.TrainDelayed
+                                                        && departure
+                                                            .TrainArrived
+                                                            == nil
+                                                    {
+                                                        Text("Train delayed")
+                                                            .foregroundColor(
+                                                                .orange
+                                                            )
+                                                            .font(.subheadline)
+                                                    }
+                                                    if departure.TrackOriginal
+                                                        != nil
+                                                        && departure
+                                                            .TrackOriginal
+                                                            != departure
+                                                            .TrackCurrent
+                                                    {
+                                                        Text(
+                                                            "Note: Track \(departure.TrackCurrent)"
+                                                        )
+                                                        .foregroundColor(
+                                                            .orange
+                                                        )
+                                                        .font(.subheadline)
+                                                    }
+                                                }
+                                            }
+                                            .padding(.leading, 5.0)
+
+                                            Spacer()
+
                                             Text(
-                                                stationName(
-                                                    for:
-                                                        departure.TargetStation[
-                                                            0])
+                                                timeFormatted(
+                                                    delayed: departure
+                                                        .TrainDelayed,
+                                                    minutes: departure
+                                                        .MinutesToDeparture)
                                             )
-                                            .font(.headline)
                                             .foregroundColor(
                                                 departure.IsCancelled
                                                     ? .red : .primary
                                             )
                                             .strikethrough(
                                                 departure.IsCancelled)
-
-                                            if departure.IsCancelled {
-                                                Text("Cancelled")
-                                                    .foregroundColor(.red)
-                                                    .font(.subheadline)
-                                            } else {
-                                                if departure.Routes[0]
-                                                    .ViaStation
-                                                    != departure.TargetStation[
-                                                        0],
-                                                    let viaStation =
-                                                        viaStationName(
-                                                            for:
-                                                                departure.Routes[
-                                                                    0
-                                                                ]
-                                                                .ViaStation)
-                                                {
-                                                    Text("via \(viaStation)")
-                                                        .foregroundColor(.gray)
-                                                        .font(.subheadline)
-                                                }
-                                                if departure.TrainArrived != nil
-                                                    && Int(
-                                                        departure
-                                                            .MinutesToDeparture
-                                                    ) <= 1
-                                                {
-                                                    Text("Train arrived")
-                                                        .foregroundColor(.green)
-                                                        .font(.subheadline)
-                                                }
-                                                if departure.TrainDelayed
-                                                    && departure.TrainArrived
-                                                        == nil
-                                                {
-                                                    Text("Train delayed")
-                                                        .foregroundColor(
-                                                            .orange
-                                                        )
-                                                        .font(.subheadline)
-                                                }
-                                                if departure.TrackOriginal
-                                                    != nil
-                                                    && departure.TrackOriginal
-                                                        != departure
-                                                        .TrackCurrent
-                                                {
-                                                    Text(
-                                                        "Note: Track \(departure.TrackCurrent)"
-                                                    )
-                                                    .foregroundColor(.orange)
-                                                    .font(.subheadline)
-                                                }
-                                            }
                                         }
-                                        .padding(.leading, 5.0)
-
-                                        Spacer()
-
-                                        Text(
-                                            timeFormatted(
-                                                delayed: departure.TrainDelayed,
-                                                minutes: departure
-                                                    .MinutesToDeparture)
-                                        )
-                                        .foregroundColor(
-                                            departure.IsCancelled
-                                                ? .red : .primary
-                                        )
-                                        .strikethrough(departure.IsCancelled)
                                     }
-                                    .onTapGesture {
-                                        selectedDeparture = departure
-                                        showingDetail = true
-                                    }
+                                    .contentShape(Rectangle())  // Make the entire VStack tappable
                                 }
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
                     }
                 }
             }
         }
-        .overlay(
-            Group {
-                if showingDetail, let selectedDeparture = selectedDeparture {
-                    Color.black.opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            showingDetail = false
-                        }
-                    GeometryReader { geometry in
-                        VStack {
-                            DepartureDetailView(departure: selectedDeparture)
-                                .frame(
-                                    width: geometry.size.width * 0.8,
-                                    height: geometry.size.height * 0.6
-                                )
-                                .padding(.all)
-                                .background(Color(UIColor.systemBackground))
-                                .cornerRadius(10)
-                                .shadow(radius: 10)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                }
+        .sheet(isPresented: $showingDetail) {
+            if let selectedDeparture = selectedDeparture {
+                DepartureDetailView(departure: selectedDeparture)
+                    .padding()
             }
-        )
+        }
         .onAppear {
             webSocketManager.connect(stationId: station.id)
         }
