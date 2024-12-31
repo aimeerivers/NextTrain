@@ -12,6 +12,10 @@ struct DepartureDetailView: View {
     @State private var isLoading = true
     @State private var stations: [RouteStation] = []
 
+    var unitTypes: String {
+        departure.Routes.map { $0.UnitType }.joined(separator: ", ")
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             if isLoading {
@@ -105,7 +109,7 @@ struct DepartureDetailView: View {
                         .padding(.all, 1.0)
                     }
 
-                    Text("Train ID: \(departure.id)")
+                    Text("Train ID: \(departure.id) (\(unitTypes))")
                         .font(.footnote)
                         .foregroundColor(.gray)
                         .padding(.top)

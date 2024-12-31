@@ -50,10 +50,12 @@ struct RouteStation: Codable {
 
 struct Route: Codable {
     let ViaStation: String?
+    let UnitType: String
     let Stations: [RouteStation]
 
     enum CodingKeys: String, CodingKey {
         case ViaStation
+        case UnitType
         case Stations
     }
 
@@ -61,6 +63,7 @@ struct Route: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         ViaStation = try container.decodeIfPresent(
             String.self, forKey: .ViaStation)
+        UnitType = try container.decode(String.self, forKey: .UnitType)
         Stations = try container.decode([RouteStation].self, forKey: .Stations)
     }
 }
