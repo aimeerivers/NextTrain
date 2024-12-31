@@ -88,31 +88,40 @@ struct DepartureDetailView: View {
                 .padding(.bottom)
 
                 ScrollView {
-                    LazyVGrid(columns: [
-                        GridItem(.fixed(50), alignment: .leading),
-                        GridItem(.flexible(), alignment: .leading),
-                    ]) {
-                        ForEach($stations, id: \.StationId) { $station in
-                            Text(formattedTime(from: station.ExpectedDateTime))
+                    if !departure.IsCancelled {
+                        LazyVGrid(columns: [
+                            GridItem(.fixed(50), alignment: .leading),
+                            GridItem(.flexible(), alignment: .leading),
+                        ]) {
+                            ForEach($stations, id: \.StationId) { $station in
+                                Text(
+                                    formattedTime(
+                                        from: station.ExpectedDateTime)
+                                )
                                 .font(.subheadline)
                                 .foregroundColor(
                                     station.IsCancelled ? .red : .primary
                                 )
                                 .strikethrough(station.IsCancelled)
-                            Text(stationName(for: station.StationId))
-                                .font(.subheadline)
-                                .foregroundColor(
-                                    station.IsCancelled ? .red : .primary
-                                )
-                                .strikethrough(station.IsCancelled)
+                                Text(stationName(for: station.StationId))
+                                    .font(.subheadline)
+                                    .foregroundColor(
+                                        station.IsCancelled ? .red : .primary
+                                    )
+                                    .strikethrough(station.IsCancelled)
+                            }
+                            .padding(.all, 1.0)
                         }
-                        .padding(.all, 1.0)
                     }
 
-                    Text("Train ID: \(departure.id) (\(unitTypes))")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                        .padding(.top)
+                    HStack() {
+                        Text("Train ID: \(departure.id) (\(unitTypes))")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                            .padding(.top)
+                        
+                        Spacer()
+                    }
                 }
 
                 Spacer()
