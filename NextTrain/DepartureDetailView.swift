@@ -35,37 +35,49 @@ struct DepartureDetailView: View {
                             stationName(for: departure.TargetStation[0])
                         )
                         .font(.headline)
+                        .foregroundColor(
+                            departure.IsCancelled ? .red : .primary
+                        )
+                        .strikethrough(departure.IsCancelled)
 
-                        if departure.Routes[0]
-                            .ViaStation
-                            != departure.TargetStation[0],
-                            let viaStation =
-                                viaStationName(
-                                    for: departure.Routes[0].ViaStation)
-                        {
-                            Text("via \(viaStation)")
-                                .foregroundColor(.gray)
+                        if departure.IsCancelled {
+                            Text("Cancelled")
+                                .foregroundColor(.red)
                                 .font(.subheadline)
+                        } else {
+                            if departure.Routes[0]
+                                .ViaStation
+                                != departure.TargetStation[0],
+                                let viaStation =
+                                    viaStationName(
+                                        for: departure.Routes[0].ViaStation)
+                            {
+                                Text("via \(viaStation)")
+                                    .foregroundColor(.gray)
+                                    .font(.subheadline)
+                            }
                         }
                     }
                     .padding(.leading, 5.0)
 
                     Spacer()
 
-                    VStack {
-                        if departure.DepartureTimeDifference {
+                    if !departure.AwaitingTime && !departure.IsCancelled {
+                        VStack {
+                            if departure.DepartureTimeDifference {
+                                Text(
+                                    formattedTime(
+                                        from: departure.ScheduleTimeDeparture)
+                                )
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                                .strikethrough()
+                            }
                             Text(
                                 formattedTime(
-                                    from: departure.ScheduleTimeDeparture)
-                            )
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .strikethrough()
+                                    from: departure.EstimatedTimeDeparture)
+                            ).bold()
                         }
-                        Text(
-                            formattedTime(
-                                from: departure.EstimatedTimeDeparture)
-                        ).bold()
                     }
 
                 }
@@ -79,8 +91,16 @@ struct DepartureDetailView: View {
                         ForEach($stations, id: \.StationId) { $station in
                             Text(formattedTime(from: station.ExpectedDateTime))
                                 .font(.subheadline)
+                                .foregroundColor(
+                                    station.IsCancelled ? .red : .primary
+                                )
+                                .strikethrough(station.IsCancelled)
                             Text(stationName(for: station.StationId))
                                 .font(.subheadline)
+                                .foregroundColor(
+                                    station.IsCancelled ? .red : .primary
+                                )
+                                .strikethrough(station.IsCancelled)
                         }
                         .padding(.all, 1.0)
                     }
@@ -103,4 +123,3 @@ struct DepartureDetailView: View {
 #Preview {
     DepartureDetailView(departure: Departure.sample)
 }
-    
