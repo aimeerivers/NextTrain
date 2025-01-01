@@ -109,7 +109,7 @@ struct DepartureDetailView: View {
                                 Image("\(route.UnitType)_\(mode)")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(height: 25.0)
+                                    .frame(height: 20.0)
                             }
                             Spacer()
                         }
