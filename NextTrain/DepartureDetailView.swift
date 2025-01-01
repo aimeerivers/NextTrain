@@ -110,21 +110,17 @@ struct DepartureDetailView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(height: 25.0)
-                                    .offset(
-                                        x: animateTrainImages
-                                            ? 0 : -UIScreen.main.bounds.width
-                                    )
-                                    .animation(
-                                        .easeInOut(duration: 0.5).delay(
-                                            0.1
-                                                * Double(
-                                                    departure.Routes.firstIndex(
-                                                        of: route) ?? 0)),
-                                        value: animateTrainImages)
                             }
                             Spacer()
                         }
                         .padding(.vertical)
+                        .offset(
+                            x: animateTrainImages
+                                ? 0 : -UIScreen.main.bounds.width
+                        )
+                        .animation(
+                            .easeInOut(duration: 0.6), value: animateTrainImages
+                        )
                         .onAppear {
                             animateTrainImages = true
                         }
