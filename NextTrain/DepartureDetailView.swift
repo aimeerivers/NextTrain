@@ -11,10 +11,9 @@ struct DepartureDetailView: View {
     let departure: Departure
     @State private var isLoading = true
     @State private var stations: [RouteStation] = []
+    @State private var animateTrainImages = false
 
-    var unitTypes: String {
-        departure.Routes.map { $0.UnitType }.joined(separator: ", ")
-    }
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -96,15 +95,41 @@ struct DepartureDetailView: View {
                     }
 
                 }
-                .padding(.bottom)
 
                 ScrollView {
                     if !departure.IsCancelled {
+
+                        // train image
+                        let mode = colorScheme == .dark ? "dark" : "light"
+
+                        HStack {
+                            Spacer()
+                            ForEach(departure.Routes.reversed(), id: \.self) {
+                                route in
+                                Image("\(route.UnitType)_\(mode)")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 25.0)
+                            }
+                            Spacer()
+                        }
+                        .padding(.vertical)
+                        .offset(
+                            x: animateTrainImages
+                                ? 0 : -UIScreen.main.bounds.width
+                        )
+                        .animation(
+                            .easeInOut(duration: 0.6), value: animateTrainImages
+                        )
+                        .onAppear {
+                            animateTrainImages = true
+                        }
+
                         LazyVGrid(columns: [
                             GridItem(.fixed(50), alignment: .leading),
                             GridItem(.flexible(), alignment: .leading),
                         ]) {
-                            ForEach($stations, id: \.StationId) { $station in
+                            ForEach(stations, id: \.StationId) { station in
                                 Text(
                                     formattedTime(
                                         from: station.ExpectedDateTime)
@@ -126,7 +151,7 @@ struct DepartureDetailView: View {
                     }
 
                     HStack {
-                        Text("Train ID: \(departure.id) (\(unitTypes))")
+                        Text("Train ID: \(departure.id)")
                             .font(.footnote)
                             .foregroundColor(.gray)
                             .padding(.top)
