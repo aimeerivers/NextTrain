@@ -11,6 +11,7 @@ struct DepartureDetailView: View {
     let departure: Departure
     @State private var isLoading = true
     @State private var stations: [RouteStation] = []
+    @State private var animateTrainImages = false
 
     @Environment(\.colorScheme) var colorScheme
 
@@ -109,10 +110,24 @@ struct DepartureDetailView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(height: 25.0)
+                                    .offset(
+                                        x: animateTrainImages
+                                            ? 0 : -UIScreen.main.bounds.width
+                                    )
+                                    .animation(
+                                        .easeInOut(duration: 0.5).delay(
+                                            0.1
+                                                * Double(
+                                                    departure.Routes.firstIndex(
+                                                        of: route) ?? 0)),
+                                        value: animateTrainImages)
                             }
                             Spacer()
                         }
                         .padding(.vertical)
+                        .onAppear {
+                            animateTrainImages = true
+                        }
 
                         LazyVGrid(columns: [
                             GridItem(.fixed(50), alignment: .leading),
