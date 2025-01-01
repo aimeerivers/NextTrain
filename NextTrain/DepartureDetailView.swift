@@ -14,10 +14,6 @@ struct DepartureDetailView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
-    var unitTypes: String {
-        departure.Routes.map { $0.UnitType }.joined(separator: ", ")
-    }
-
     var body: some View {
         VStack(alignment: .leading) {
             if isLoading {
@@ -144,7 +140,7 @@ struct DepartureDetailView: View {
                     }
 
                     HStack {
-                        Text("Train ID: \(departure.id) (\(unitTypes))")
+                        Text("Train ID: \(departure.id)")
                             .font(.footnote)
                             .foregroundColor(.gray)
                             .padding(.top)
