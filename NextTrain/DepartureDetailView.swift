@@ -98,7 +98,6 @@ struct DepartureDetailView: View {
                     }
 
                 }
-                .padding(.bottom)
 
                 ScrollView {
                     if !departure.IsCancelled {
@@ -108,13 +107,16 @@ struct DepartureDetailView: View {
 
                         HStack {
                             Spacer()
-                            ForEach(departure.Routes, id: \.self) { route in
+                            ForEach(departure.Routes.reversed(), id: \.self) {
+                                route in
                                 Image("\(route.UnitType)_\(mode)")
-                                .resizable()
-                                .scaledToFit()
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 25.0)
                             }
                             Spacer()
                         }
+                        .padding(.vertical)
 
                         LazyVGrid(columns: [
                             GridItem(.fixed(50), alignment: .leading),
