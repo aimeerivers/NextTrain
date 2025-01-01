@@ -66,21 +66,32 @@ struct DepartureDetailView: View {
 
                     Spacer()
 
-                    if !departure.AwaitingTime && !departure.IsCancelled {
-                        VStack {
-                            if departure.DepartureTimeDifference {
+                    if departure.IsCancelled {
+                        Text(
+                            formattedTime(
+                                from: departure.ScheduleTimeDeparture)
+                        )
+                        .font(.subheadline)
+                        .foregroundColor(.red)
+                        .strikethrough()
+                    } else {
+                        if !departure.AwaitingTime {
+                            VStack {
+                                if departure.DepartureTimeDifference {
+                                    Text(
+                                        formattedTime(
+                                            from: departure
+                                                .ScheduleTimeDeparture)
+                                    )
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                    .strikethrough()
+                                }
                                 Text(
                                     formattedTime(
-                                        from: departure.ScheduleTimeDeparture)
-                                )
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                                .strikethrough()
+                                        from: departure.EstimatedTimeDeparture)
+                                ).bold()
                             }
-                            Text(
-                                formattedTime(
-                                    from: departure.EstimatedTimeDeparture)
-                            ).bold()
                         }
                     }
 
@@ -114,12 +125,12 @@ struct DepartureDetailView: View {
                         }
                     }
 
-                    HStack() {
+                    HStack {
                         Text("Train ID: \(departure.id) (\(unitTypes))")
                             .font(.footnote)
                             .foregroundColor(.gray)
                             .padding(.top)
-                        
+
                         Spacer()
                     }
                 }
