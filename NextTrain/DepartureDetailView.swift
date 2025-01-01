@@ -12,6 +12,8 @@ struct DepartureDetailView: View {
     @State private var isLoading = true
     @State private var stations: [RouteStation] = []
 
+    @Environment(\.colorScheme) var colorScheme
+
     var unitTypes: String {
         departure.Routes.map { $0.UnitType }.joined(separator: ", ")
     }
@@ -89,11 +91,25 @@ struct DepartureDetailView: View {
 
                 ScrollView {
                     if !departure.IsCancelled {
+
+                        // train image
+                        let mode = colorScheme == .dark ? "dark" : "light"
+
+                        HStack {
+                            Spacer()
+                            ForEach(departure.Routes, id: \.self) { route in
+                                Image("\(route.UnitType)_\(mode)")
+                                .resizable()
+                                .scaledToFit()
+                            }
+                            Spacer()
+                        }
+
                         LazyVGrid(columns: [
                             GridItem(.fixed(50), alignment: .leading),
                             GridItem(.flexible(), alignment: .leading),
                         ]) {
-                            ForEach($stations, id: \.StationId) { $station in
+                            ForEach(stations, id: \.StationId) { station in
                                 Text(
                                     formattedTime(
                                         from: station.ExpectedDateTime)
@@ -114,12 +130,12 @@ struct DepartureDetailView: View {
                         }
                     }
 
-                    HStack() {
+                    HStack {
                         Text("Train ID: \(departure.id) (\(unitTypes))")
                             .font(.footnote)
                             .foregroundColor(.gray)
                             .padding(.top)
-                        
+
                         Spacer()
                     }
                 }
