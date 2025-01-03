@@ -164,6 +164,8 @@ struct DepartureView: View {
                                                         && departure
                                                             .TrainArrived
                                                             == nil
+                                                        && !departure
+                                                            .AwaitingTime
                                                     {
                                                         Text("Train delayed")
                                                             .foregroundColor(
