@@ -48,7 +48,7 @@ struct RouteStation: Codable {
     }
 }
 
-struct Route: Codable, Hashable, Equatable {
+struct Route: Codable {
     let ViaStation: String?
     let UnitType: String
     let Stations: [RouteStation]
@@ -65,15 +65,6 @@ struct Route: Codable, Hashable, Equatable {
             String.self, forKey: .ViaStation)
         UnitType = try container.decode(String.self, forKey: .UnitType)
         Stations = try container.decode([RouteStation].self, forKey: .Stations)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ViaStation)
-        hasher.combine(UnitType)
-    }
-
-    static func == (lhs: Route, rhs: Route) -> Bool {
-        return lhs.ViaStation == rhs.ViaStation && lhs.UnitType == rhs.UnitType
     }
 }
 
