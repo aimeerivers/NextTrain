@@ -32,6 +32,7 @@ struct StationRow: View {
                         .frame(width: 17.0)
                         .padding(.horizontal, 4.0)
                         .background(Color(line))
+                        .cornerRadius(3.0)
                 }
             }
             .padding(.all, 1.0)

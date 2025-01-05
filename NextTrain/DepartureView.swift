@@ -105,6 +105,7 @@ struct DepartureView: View {
                                                 .background(
                                                     Color(departure.LineName)
                                                 )
+                                                .cornerRadius(3.0)
 
                                             VStack(alignment: .leading) {
                                                 Text(
