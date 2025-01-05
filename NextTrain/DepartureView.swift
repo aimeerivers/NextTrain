@@ -32,7 +32,7 @@ func stationName(for id: String) -> String {
 
 func timeFormatted(awaitingTime: Bool, minutes: Float) -> String {
     if awaitingTime {
-        return "? min"
+        return ""
     } else if minutes.truncatingRemainder(dividingBy: 1) == 0 {
         return "\(Int(minutes)) min"
     } else {
