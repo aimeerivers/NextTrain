@@ -102,6 +102,7 @@ struct DepartureView: View {
                                                 )
                                                 .frame(width: 21.0)
                                                 .padding(.horizontal, 5.0)
+                                                .padding(.vertical, 3.0)
                                                 .background(
                                                     Color(departure.LineName)
                                                 )
