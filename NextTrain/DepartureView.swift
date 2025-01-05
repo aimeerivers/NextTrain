@@ -232,7 +232,9 @@ struct DepartureView: View {
             }
         }
         .sheet(item: $selectedDeparture) { departure in
-            DepartureDetailView(departure: departure).padding()
+            DepartureDetailView(departure: departure)
+                .padding()
+                .presentationDetents([.medium, .large])
         }
         .onAppear {
             isLoading = true
