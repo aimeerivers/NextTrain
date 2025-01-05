@@ -49,6 +49,7 @@ struct DepartureView: View {
     @StateObject private var webSocketManager = WebSocketManager()
     @State private var selectedDeparture: Departure?
     @State private var isLoading = true
+    @State private var canPresentSheet = true
 
     let station: Station
 
@@ -89,7 +90,10 @@ struct DepartureView: View {
                         Section(header: Text("Track \(track)")) {
                             ForEach(groupedDepartures[track]!) { departure in
                                 Button(action: {
-                                    selectedDeparture = departure
+                                    if canPresentSheet {
+                                        canPresentSheet = false
+                                        selectedDeparture = departure
+                                    }
                                 }) {
                                     VStack(alignment: .leading) {
                                         HStack {
@@ -231,7 +235,14 @@ struct DepartureView: View {
                 }
             }
         }
-        .sheet(item: $selectedDeparture) { departure in
+        .sheet(
+            item: $selectedDeparture,
+            onDismiss: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    canPresentSheet = true
+                }
+            }
+        ) { departure in
             DepartureDetailView(departure: departure)
                 .padding()
                 .presentationDetents([.medium, .large])
