@@ -245,7 +245,7 @@ struct DepartureView: View {
         ) { departure in
             DepartureDetailView(departure: departure)
                 .padding()
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.fraction(0.6)])
         }
         .onAppear {
             isLoading = true
