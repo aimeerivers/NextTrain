@@ -129,7 +129,11 @@ struct DepartureDetailView: View {
                                     value: animateTrainImages
                                 )
                                 .onAppear {
-                                    animateTrainImages = true
+                                    DispatchQueue.main.asyncAfter(
+                                        deadline: .now() + 0.1
+                                    ) {
+                                        animateTrainImages = true
+                                    }
                                 }
                         }
 
