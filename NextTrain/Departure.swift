@@ -73,14 +73,14 @@ struct Route: Codable, Hashable, Equatable {
     }
 
     static func == (lhs: Route, rhs: Route) -> Bool {
-        return lhs.ViaStation == rhs.ViaStation &&
-               lhs.UnitType == rhs.UnitType
+        return lhs.ViaStation == rhs.ViaStation && lhs.UnitType == rhs.UnitType
     }
 }
 
 struct Departure: Identifiable, Codable {
     let id: String
     let LineName: String
+    let DepartureDirection: String
     let MinutesToDeparture: Float
     let AwaitingTime: Bool
     let TargetStation: [String]
@@ -98,6 +98,7 @@ struct Departure: Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case id = "TrainId"
         case LineName
+        case DepartureDirection
         case MinutesToDeparture
         case TargetStation
         case TrackCurrent
@@ -114,6 +115,8 @@ struct Departure: Identifiable, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         LineName = try container.decode(String.self, forKey: .LineName)
+        DepartureDirection = try container.decode(
+            String.self, forKey: .DepartureDirection)
         let minutesToDeparture = try container.decodeIfPresent(
             Float.self, forKey: .MinutesToDeparture)
         MinutesToDeparture = minutesToDeparture ?? 0
