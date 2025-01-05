@@ -15,6 +15,10 @@ struct DepartureDetailView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
+    var trainPicture: String {
+        departure.Routes.map { $0.UnitType }.joined(separator: "-")
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             if isLoading {
@@ -101,31 +105,24 @@ struct DepartureDetailView: View {
 
                 ScrollView {
                     if !departure.IsCancelled {
-
-                        // train image
-                        let mode = colorScheme == .dark ? "dark" : "light"
-
                         HStack {
-                            Spacer()
-                            ForEach(departure.Routes.reversed(), id: \.self) {
-                                route in
-                                Image("\(route.UnitType)_\(mode)")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 20.0)
-                            }
-                            Spacer()
-                        }
-                        .padding(.vertical)
-                        .offset(
-                            x: animateTrainImages
-                                ? 0 : -UIScreen.main.bounds.width
-                        )
-                        .animation(
-                            .easeInOut(duration: 0.6), value: animateTrainImages
-                        )
-                        .onAppear {
-                            animateTrainImages = true
+                            Image(trainPicture)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 15.0)
+                                .padding()
+                                .adaptToColorScheme(colorScheme)
+                                .offset(
+                                    x: animateTrainImages
+                                        ? 0 : -UIScreen.main.bounds.width
+                                )
+                                .animation(
+                                    .easeInOut(duration: 0.5),
+                                    value: animateTrainImages
+                                )
+                                .onAppear {
+                                    animateTrainImages = true
+                                }
                         }
 
                         LazyVGrid(columns: [
@@ -173,6 +170,17 @@ struct DepartureDetailView: View {
                 isLoading = false
                 stations = departure.Routes[0].Stations
             }
+        }
+    }
+}
+
+extension View {
+    func adaptToColorScheme(_ colorScheme: ColorScheme = .light) -> some View {
+        switch colorScheme {
+        case .dark:
+            return AnyView(self.colorInvert())
+        default:
+            return AnyView(self)
         }
     }
 }
