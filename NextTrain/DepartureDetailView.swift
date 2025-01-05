@@ -112,9 +112,17 @@ struct DepartureDetailView: View {
                                 .frame(height: 15.0)
                                 .padding()
                                 .adaptToColorScheme(colorScheme)
+                                .scaleEffect(
+                                    x: departure.DepartureDirection == "DOWN"
+                                        ? -1 : 1, y: 1
+                                )
                                 .offset(
                                     x: animateTrainImages
-                                        ? 0 : -UIScreen.main.bounds.width
+                                        ? 0
+                                        : (departure.DepartureDirection
+                                            == "DOWN"
+                                            ? UIScreen.main.bounds.width
+                                            : -UIScreen.main.bounds.width)
                                 )
                                 .animation(
                                     .easeInOut(duration: 0.5),
